@@ -1,0 +1,5 @@
+# Hide cache files
+__pycache__/
+
+# Hide secrets :)
+.env
