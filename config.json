@@ -1,3 +1,4 @@
 {
-    "prefix": "p!"
+    "prefix": "p!",
+    "cmd_path": "prism/cmds"
 }
