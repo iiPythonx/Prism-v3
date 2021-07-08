@@ -3,6 +3,7 @@
 # Modules
 import os
 import sqlite3
+from prism.config import config
 from sqlite3.dbapi2 import Cursor, Row
 
 # Connection handler
@@ -81,7 +82,7 @@ class DBConnection(object):
 class Database(object):
     def __init__(self) -> None:
         self._db_cache = {}
-        self._db_dir = os.path.abspath("db")
+        self._db_dir = os.path.abspath(config.get("db_dir"))
 
     def load_db(self, name: str) -> DBConnection:
         if not name.endswith(".db"):

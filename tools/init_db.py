@@ -6,15 +6,18 @@
 import os
 import sqlite3
 from rich import print
+from prism.config import config
 
 # Check the db folder
 print("[yellow]Initializing databases...")
-if not os.path.isdir("db"):
-    os.mkdir("db")
+db_dir = config.get("db_dir")
+
+if not os.path.isdir(db_dir):
+    os.mkdir(db_dir)
 
 # Create the databases
 def create_db(name):
-    conn = sqlite3.connect(os.path.abspath(os.path.join("db", name + ".db")))
+    conn = sqlite3.connect(os.path.abspath(os.path.join(db_dir, name + ".db")))
     cursor = conn.cursor()
     return conn, cursor
 
