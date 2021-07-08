@@ -3,7 +3,7 @@
 # Modules
 import os
 import sqlite3
-from sqlite3.dbapi2 import Cursor
+from sqlite3.dbapi2 import Cursor, Row
 
 # Connection handler
 class DBConnection(object):
@@ -12,8 +12,16 @@ class DBConnection(object):
         self.db_name = self.db_path.split("/")[-1].split(".db")[0]
         self._load_db()
 
+    def __factory__(self, cursor: Cursor, row: Row) -> dict:
+        data = {}
+        for idx, col in enumerate(cursor.description):
+            data[col[0]] = row[idx]
+
+        return data
+
     def _load_db(self) -> None:
         self.conn = sqlite3.connect(self.db_path)
+        self.conn.row_factory = self.__factory__
         self.cursor = self.conn.cursor()
 
     def _close_db(self) -> None:
@@ -47,13 +55,17 @@ class DBConnection(object):
         self.cursor.execute(f"UPDATE {table} SET {set_params} WHERE {identifier[0]}=?", (identifier[1],))
         return self.save()
 
-    def get(self, key: str, identifier: tuple, table: str = None) -> any:
+    def get(self, identifier: tuple, key: str = None, table: str = None) -> any:
         if table is None:
             table = self.db_name
 
         # Grab data
-        self.cursor.execute(f"SELECT {key} FROM {table} WHERE {identifier[0]}=?", (identifier[1],))
-        return self.cursor.fetchone()[0]
+        self.cursor.execute(f"SELECT * FROM {table} WHERE {identifier[0]}=?", (identifier[1],))
+        data = self.cursor.fetchone()
+        if key is not None:
+            data = data[key]
+
+        return data
 
     def test_for(self, identifier: tuple, table: str = None) -> bool:
         if table is None:

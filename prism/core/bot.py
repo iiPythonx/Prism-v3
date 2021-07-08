@@ -4,6 +4,7 @@
 import os
 from .utils import Utils
 from ..utils.timer import timer
+from ..database import Database
 from prism.config import config
 from discord.ext import commands
 from ..utils.logging import logger
@@ -19,6 +20,7 @@ class PrismBot(commands.Bot):
         self.log = logger.log
 
         # Load core
+        self.db = Database()
         self.core = Utils(self)
 
         # Handle post-initialization
