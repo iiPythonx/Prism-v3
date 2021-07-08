@@ -1,7 +1,6 @@
 # Copyright 2021 iiPython
 
 # Modules
-import secrets
 from typing import Union
 from datetime import datetime
 from secrets import token_hex
