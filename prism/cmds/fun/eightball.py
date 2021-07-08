@@ -36,7 +36,7 @@ class Eightball(commands.Cog):
         ]
 
     @commands.command(pass_context = True, aliases = ["8ball"])
-    async def eightball(self, ctx, question: str = None) -> any:
+    async def eightball(self, ctx, *, question: str = None) -> any:
         if question is None:
             return await ctx.send(embed = self.core.error("Please give the magic eightball a question."))
 
