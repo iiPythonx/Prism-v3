@@ -1,6 +1,7 @@
 # Copyright 2021 iiPython
 
 # Modules
+from prism.config import config
 from discord.ext import commands
 
 # Command class
@@ -15,6 +16,9 @@ class Help(commands.Cog):
     def _fetch_attrs(self) -> list:
         attrs = []
         for command in self.bot.commands:
+            if hasattr(command.cog, "hidden") and command.cog.hidden:
+                continue
+
             attr = command.cog.attr
             attr["aliases"] = command.aliases
             attrs.append(attr)
@@ -57,7 +61,7 @@ class Help(commands.Cog):
             embed.title = "Prism v3"
             embed.add_field(name = "Categories", value = f"> {self._format_list(categories)}", inline = False)
             embed.add_field(name = "Commands", value = f"> {ctx.prefix}help [category]", inline = False)
-            embed.add_field(name = "Credits", value = "> iiPython#0768", inline = False)
+            embed.add_field(name = "Credits", value = f"> {config.get('owner')}", inline = False)
 
         else:
 

@@ -2,6 +2,7 @@
 
 # Modules
 import os
+import secrets
 from .utils import Utils
 from ..utils.timer import timer
 from ..database import Database
@@ -69,3 +70,15 @@ class PrismBot(commands.Bot):
     # Main events
     async def on_ready(self) -> None:
         self.log("success", "Logged in as {}.".format(str(self.user)))
+
+    async def on_command_error(self, ctx: commands.Context, error: Exception) -> any:
+        error_map = {
+            commands.CommandNotFound: "No command with that name exists."
+        }
+        if type(error) in error_map:
+            return await ctx.send(embed = self.core.error(error_map[type(error)], syserror = True))
+
+        error_code = secrets.token_hex(8)
+        self.log("error", f"{error_code} | {ctx.command} | {error}")
+
+        return await ctx.send(embed = self.core.error(f"An unexpected error has occured, please report this to {config.get('owner')}.\nError code: `{error_code}`"))
