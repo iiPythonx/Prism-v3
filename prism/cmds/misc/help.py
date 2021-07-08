@@ -40,7 +40,7 @@ class Help(commands.Cog):
     def _format_list(self, list_to_format: list) -> str:
         return "".join(_ + ", " for _ in list_to_format)[:-2]
 
-    @commands.command(pass_context = True, description = "Some description.", aliases = ["info"])
+    @commands.command(pass_context = True, aliases = ["info"])
     async def help(self, ctx, query: str = None) -> any:
 
         # Construct embed
@@ -81,7 +81,9 @@ class Help(commands.Cog):
                     embed.title = f"Command Info - {query}"
                     embed.add_field(name = "Description", value = f"> {attr['desc']}", inline = False)
                     embed.add_field(name = "Category", value = f"> {self._cat_long_map[attr['cat']]} ({attr['cat']})", inline = False)
-                    embed.add_field(name = "Aliases", value = f"> {self._format_list(attr['aliases'])}", inline = False)
+                    if attr["aliases"]:
+                        embed.add_field(name = "Aliases", value = f"> {self._format_list(attr['aliases'])}", inline = False)
+
                     embed.add_field(name = "Usage", value = f"> {attr['usage']}", inline = False)
 
             # Error handle

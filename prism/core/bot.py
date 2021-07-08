@@ -39,7 +39,7 @@ class PrismBot(commands.Bot):
         self.run(token, reconnect = True)
 
     def load_cmds(self, cmd_path: str = None) -> None:
-        timer.start("cmdload")
+        tid = timer.start()
         if "cmd_path" in config.config and cmd_path is None:
             cmd_path = config.get("cmd_path")
 
@@ -62,7 +62,7 @@ class PrismBot(commands.Bot):
                 self.load_extension(modpath)
 
         # Log
-        self.log("success", "Loaded commands in {} second(s).".format(timer.end("cmdload")))
+        self.log("success", "Loaded commands in {} second(s).".format(timer.end(tid)))
 
     # Main events
     async def on_ready(self) -> None:
