@@ -16,4 +16,4 @@ class Utils(object):
         return discord.Embed(**kwargs)
 
     def error(self, message: str) -> discord.Embed:
-        return self.embed(description = f"**{message}**", color = 0xFF0000)
+        return self.embed(description = f"**{message}**", color = 0xd9534f)
