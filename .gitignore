@@ -3,3 +3,6 @@ __pycache__/
 
 # Hide secrets :)
 .env
+
+# Hide database
+db/
