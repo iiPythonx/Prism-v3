@@ -13,11 +13,11 @@ class Create(commands.Cog):
     @commands.command(pass_context = True)
     async def create(self, ctx) -> any:
         db = self.bot.db.load_db("users")
-        if not db.test_for(("userid", ctx.author.id)):
+        if db.test_for(("userid", ctx.author.id)):
             return await ctx.send(embed = self.core.error("You already have a Prism account."))
 
         db.create((ctx.author.id, 100))
-        return await ctx.send(embed = self.core.embed("You now have a Prism account."))
+        return await ctx.send(embed = self.core.small_embed(":tada: You now have a Prism account."))
 
 # Link
 def setup(bot) -> None:
