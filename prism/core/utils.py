@@ -17,3 +17,6 @@ class Utils(object):
 
     def error(self, message: str) -> discord.Embed:
         return self.embed(description = f"**{message}**", color = 0xd9534f)
+
+    def noacc(self, ctx: commands.Context) -> discord.Embed:
+        return self.error(f"You don't have a Prism account (`{ctx.prefix}create` to make one).")
