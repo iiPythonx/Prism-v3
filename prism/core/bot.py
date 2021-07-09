@@ -9,6 +9,7 @@ from ..database import Database
 from prism.config import config
 from discord.ext import commands
 from ..utils.logging import logger
+from ..utils.cooldowns import Cooldowns
 
 # Bot class
 class PrismBot(commands.Bot):
@@ -23,6 +24,7 @@ class PrismBot(commands.Bot):
         # Load core
         self.db = Database()
         self.core = Utils(self)
+        self.cooldowns = Cooldowns(self)
 
         # Handle post-initialization
         self.remove_command("help")
@@ -76,9 +78,14 @@ class PrismBot(commands.Bot):
             commands.CommandNotFound: "No command with that name exists."
         }
         if type(error) in error_map:
-            return await ctx.send(embed = self.core.error(error_map[type(error)], syserror = True))
+            return await ctx.send(embed = self.core.error(error_map[type(error)]))
 
         error_code = secrets.token_hex(8)
         self.log("error", f"{error_code} | {ctx.command} | {error}")
 
-        return await ctx.send(embed = self.core.error(f"An unexpected error has occured, please report this to {config.get('owner')}.\nError code: `{error_code}`"))
+        return await ctx.send(
+            embed = self.core.error(
+                f"An unexpected error has occured, please report this to {config.get('owner')}.\nError code: `{error_code}`",
+                syserror = True
+            )
+        )
