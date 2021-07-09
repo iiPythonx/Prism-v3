@@ -48,9 +48,8 @@ class Help(commands.Cog):
     async def help(self, ctx, query: str = None) -> any:
 
         # Construct embed
-        embed = self.core.embed()
+        embed = self.core.embed(footer = ctx)
         embed.set_thumbnail(url = self.bot.user.avatar_url)
-        embed.set_footer(text = f"| Requested by {ctx.author}.", icon_url = ctx.author.avatar_url)
 
         # Fetch command list
         attrs = self._fetch_attrs()
