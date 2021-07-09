@@ -11,12 +11,20 @@ from discord.ext import commands
 class Utils(object):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
+        self.emojis = {
+            "checkmark": ":white_check_mark:"
+        }
 
     def embed(self, **kwargs) -> discord.Embed:
         if "color" not in kwargs:
             kwargs["color"] = 0xEB8F6B
 
-        return discord.Embed(**kwargs)
+        embed = discord.Embed(**kwargs)
+        if "footer" in kwargs:
+            author = kwargs["footer"].author
+            embed.set_footer(icon_url = author.avatar_url, text = f"| Requested by {author}.")
+
+        return embed
 
     def small_embed(self, message: str, **kwargs) -> discord.Embed:
         return self.embed(description = f"**{message}**", **kwargs)
@@ -24,8 +32,8 @@ class Utils(object):
     def error(self, message: str, syserror: bool = False) -> discord.Embed:
         return self.small_embed({False: ":no_entry_sign:", True: ":interrobang:"}[syserror] + f" {message}", color = 0xd9534f)
 
-    def noacc(self, ctx: commands.Context) -> discord.Embed:
-        return self.error(f"You don't have a Prism account (`{ctx.prefix}create` to make one).")
+    def noacc(self, ctx: commands.Context, user: Union[discord.User, discord.Member] = None) -> discord.Embed:
+        return self.error(f"""{"You don't" if user is None or user is not None and user == ctx.author else f"{user.name} doesn't"} have a Prism account{f" (`{ctx.prefix}create` to make one)" if user is None else ""}.""")
 
     def locate_module(self, command: str) -> Union[str, None]:
         path = config.get("cmd_path")
@@ -35,3 +43,6 @@ class Utils(object):
                     relpath = os.path.join(path, file).replace("\\", "/")  # Convert to unix-like path
                     modpath = relpath[:-3].replace("/", ".")  # Convert to Python dot-path
                     return modpath
+
+    def format_coins(self, amount: int) -> str:
+        return "{:20,}".format(amount)
