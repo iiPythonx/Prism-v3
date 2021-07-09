@@ -1,8 +1,8 @@
 # Copyright 2021 iiPython
 
 # Modules
-from typing import Union
 import discord
+from typing import Union
 from discord.ext import commands
 
 # Command class
