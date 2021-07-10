@@ -46,3 +46,6 @@ class Utils(object):
 
     def format_coins(self, amount: int) -> str:
         return "{:20,}".format(amount)
+
+    def format_list(self, list_to_format: list) -> str:
+        return "".join(_ + ", " for _ in list_to_format)[:-2]

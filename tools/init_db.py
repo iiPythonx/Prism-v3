@@ -25,7 +25,8 @@ c, cs = create_db("users")
 cs.execute("""
 CREATE TABLE IF NOT EXISTS users (
     userid integer,
-    balance long
+    balance long,
+    bio text
 )
 """)
 c.commit()

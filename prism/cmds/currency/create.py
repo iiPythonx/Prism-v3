@@ -16,7 +16,7 @@ class Create(commands.Cog):
         if db.test_for(("userid", ctx.author.id)):
             return await ctx.send(embed = self.core.error("You already have a Prism account."))
 
-        db.create((ctx.author.id, 100))
+        db.create((ctx.author.id, 100, ""))
         return await ctx.send(embed = self.core.small_embed(":tada: You now have a Prism account."))
 
 # Link

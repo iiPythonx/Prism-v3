@@ -41,9 +41,6 @@ class Help(commands.Cog):
 
         return cmds
 
-    def _format_list(self, list_to_format: list) -> str:
-        return "".join(_ + ", " for _ in list_to_format)[:-2]
-
     @commands.command(pass_context = True, aliases = ["info"])
     async def help(self, ctx, query: str = None) -> any:
 
@@ -58,7 +55,7 @@ class Help(commands.Cog):
         # Construct primary help command
         if query is None:
             embed.title = "Prism v3"
-            embed.add_field(name = "Categories", value = f"> {self._format_list(categories)}", inline = False)
+            embed.add_field(name = "Categories", value = f"> {self.core.format_list(categories)}", inline = False)
             embed.add_field(name = "Commands", value = f"> {ctx.prefix}help [category]", inline = False)
             embed.add_field(name = "Credits", value = f"> {config.get('owner')}", inline = False)
 
@@ -72,7 +69,7 @@ class Help(commands.Cog):
 
                 # Create embed
                 embed.title = f"{self._cat_long_map[query]} Commands"
-                embed.add_field(name = "Commands", value = f"> {self._format_list(self._get_cat_commands(query, attrs))}", inline = False)
+                embed.add_field(name = "Commands", value = f"> {self.core.format_list(self._get_cat_commands(query, attrs))}", inline = False)
 
             # Check commands
             for attr in attrs:
@@ -85,7 +82,7 @@ class Help(commands.Cog):
                     embed.add_field(name = "Description", value = f"> {attr['desc']}", inline = False)
                     embed.add_field(name = "Category", value = f"> {self._cat_long_map[attr['cat']]} ({attr['cat']})", inline = False)
                     if attr["aliases"]:
-                        embed.add_field(name = "Aliases", value = f"> {self._format_list(attr['aliases'])}", inline = False)
+                        embed.add_field(name = "Aliases", value = f"> {self.core.format_list(attr['aliases'])}", inline = False)
 
                     embed.add_field(name = "Usage", value = f"> {attr['usage']}", inline = False)
 
