@@ -52,8 +52,9 @@ class DBConnection(object):
                 values[val] = current_val == 1
 
         # Handle updating table
-        set_params = "".join(f"{v}={values[v]}," for v in values)[:-1]
-        self.cursor.execute(f"UPDATE {table} SET {set_params} WHERE {identifier[0]}=?", (identifier[1],))
+        for v in values:
+            self.cursor.execute(f"UPDATE {table} SET {v}=? WHERE {identifier[0]}=?", (values[v], identifier[1]))
+
         return self.save()
 
     def get(self, identifier: tuple, key: str = None, table: str = None) -> any:
