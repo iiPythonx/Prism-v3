@@ -32,5 +32,16 @@ CREATE TABLE IF NOT EXISTS users (
 c.commit()
 c.close()
 
+c, cs = create_db("inventory")
+cs.execute("""
+CREATE TABLE IF NOT EXISTS inventory (
+    userid integer,
+    name text,
+    amount integer
+)
+""")
+c.commit()
+c.close()
+
 # Finish process
 print("  [green]databases initialized.")

@@ -3,6 +3,7 @@
 # Modules
 import os
 import sqlite3
+from typing import Union
 from prism.config import config
 from sqlite3.dbapi2 import Cursor, Row
 
@@ -69,11 +70,23 @@ class DBConnection(object):
 
         return data
 
-    def test_for(self, identifier: tuple, table: str = None) -> bool:
+    def getall(self, identifier: tuple, key: str = None, table: str = None) -> any:
         if table is None:
             table = self.db_name
 
+        # Grab data
         self.cursor.execute(f"SELECT * FROM {table} WHERE {identifier[0]}=?", (identifier[1],))
+        data = self.cursor.fetchall()
+        return data
+
+    def test_for(self, identifiers: Union[tuple, list], table: str = None) -> bool:
+        if table is None:
+            table = self.db_name
+
+        if isinstance(identifiers, tuple):
+            identifiers = [identifiers]
+
+        self.cursor.execute(f"SELECT * FROM {table} WHERE {''.join(f'{identifier[0]}=? AND ' for identifier in identifiers)[:-5]}", [_[1] for _ in identifiers] if len(identifiers) > 1 else (identifiers[0][1],))
         return self.cursor.fetchone() is not None
 
     def execute(self, *args, **kwargs) -> Cursor:
