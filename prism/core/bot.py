@@ -4,12 +4,11 @@
 import os
 import secrets
 from .utils import Utils
-from ..utils.timer import timer
 from ..database import Database
 from prism.config import config
 from discord.ext import commands
-from ..utils.logging import logger
-from ..utils.cooldowns import Cooldowns
+import prism.utils.objects as obj
+from ..utils import (timer, logger, Cooldowns)
 
 # Bot class
 class PrismBot(commands.Bot):
@@ -25,6 +24,7 @@ class PrismBot(commands.Bot):
         self.db = Database()
         self.core = Utils(self)
         self.cooldowns = Cooldowns(self)
+        self.objects = obj.map
 
         # Handle post-initialization
         self.remove_command("help")
