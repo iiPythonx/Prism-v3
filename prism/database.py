@@ -42,9 +42,12 @@ class DBConnection(object):
         self.cursor.execute(f"INSERT INTO {table} VALUES ({('?,' * len(values))[:-1]})", values)
         return self.save()
 
-    def update(self, values: dict, identifier: tuple, table: str = None) -> Cursor:
+    def update(self, values: dict, identifiers: Union[tuple, list], table: str = None) -> Cursor:
         if table is None:
             table = self.db_name
+
+        if isinstance(identifiers, tuple):
+            identifiers = [identifiers]
 
         # Convert booleans
         for val in values:
@@ -54,7 +57,7 @@ class DBConnection(object):
 
         # Handle updating table
         for v in values:
-            self.cursor.execute(f"UPDATE {table} SET {v}=? WHERE {identifier[0]}=?", (values[v], identifier[1]))
+            self.cursor.execute(f"UPDATE {table} SET {v}=? WHERE {''.join(f'{identifier[0]}=? AND ' for identifier in identifiers)[:-5]}", [values[v]] + [_[1] for _ in identifiers] if len(identifiers) > 1 else (values[v], identifiers[0][1],))
 
         return self.save()
 
