@@ -49,3 +49,14 @@ class Utils(object):
 
     def format_list(self, list_to_format: list) -> str:
         return "".join(_ + ", " for _ in list_to_format)[:-2]
+
+    def frmt_name(self, user: Union[discord.User, discord.Member]) -> str:
+        return user.name if not hasattr(user, "nick") or hasattr(user, "nick") and user.nick is None else user.nick
+
+    def scale_size(self, bytes: int, suffix: str = "B", add_suffix: bool = True) -> str:
+        factor = 1024
+        for unit in ["", "K", "M", "G", "T", "P"]:
+            if bytes < factor:
+                return f"{bytes:.2f}{unit if add_suffix else ''}{suffix if add_suffix else ''}"
+
+            bytes /= factor
