@@ -3,6 +3,8 @@
 # Modules
 import os
 import secrets
+
+from discord.ext.commands.errors import BadUnionArgument, MemberNotFound
 from .utils import Utils
 from ..database import Database
 from prism.config import config
@@ -75,13 +77,15 @@ class PrismBot(commands.Bot):
 
     async def on_command_error(self, ctx: commands.Context, error: Exception) -> any:
         error_map = {
-            commands.CommandNotFound: "No command with that name exists."
+            commands.CommandNotFound: "No command with that name exists.",
+            commands.BadUnionArgument: "Invalid arguments provided.",
+            commands.MemberNotFound: "No such user exists."
         }
         if type(error) in error_map:
             return await ctx.send(embed = self.core.error(error_map[type(error)]))
 
         error_code = secrets.token_hex(8)
-        self.log("error", f"{error_code} | {ctx.command} | {error}")
+        self.log("error", f"{error_code} | {ctx.command} | {type(error).__name__}: {error}")
 
         return await ctx.send(
             embed = self.core.error(
