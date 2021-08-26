@@ -3,6 +3,8 @@
 # Modules
 import os
 import discord
+import subprocess
+from shutil import which
 from typing import Union
 from prism.config import config
 from discord.ext import commands
@@ -60,3 +62,18 @@ class Utils(object):
                 return f"{bytes:.2f}{unit if add_suffix else ''}{suffix if add_suffix else ''}"
 
             bytes /= factor
+
+    def fetch_output(self, command: Union[str, list], split: tuple = None) -> str:
+        base = command.split(" ")[0] if isinstance(command, str) else command[0].split(" ")[0]
+        if not which(base):
+            return "N/A"
+
+        if isinstance(command, str):
+            command = command.split(" ")
+
+        st = subprocess.run(command, stdout = subprocess.PIPE)
+        result = st.stdout.decode("UTF-8")
+        if split is not None:
+            result = result.split(split[0])[split[1]]
+
+        return result.rstrip("\n")
