@@ -3,8 +3,6 @@
 # Modules
 import os
 import secrets
-
-from discord.ext.commands.errors import BadUnionArgument, MemberNotFound
 from .utils import Utils
 from ..database import Database
 from prism.config import config
