@@ -40,8 +40,8 @@ class Work(commands.Cog):
 
         # Send embed
         embed = self.core.embed(title = "Shift complete.", description = f"Coins gained: {gain} coin(s)\nNew balance: {self.core.format_coins(bal + gain)} coin(s)")
-        embed.set_thumbnail(url = ctx.author.avatar_url)
-        embed.set_footer(text = "| Come back in an hour.", icon_url = ctx.author.avatar_url)
+        embed.set_thumbnail(url = ctx.author.avatar.url)
+        embed.set_footer(text = "| Come back in an hour.", icon_url = ctx.author.avatar.url)
         return await ctx.send(embed = embed)
 
 # Link
