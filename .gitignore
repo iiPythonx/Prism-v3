@@ -3,6 +3,7 @@ __pycache__/
 
 # Hide secrets :)
 .env
+config.json
 
 # Hide database
 db/

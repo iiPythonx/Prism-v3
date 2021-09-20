@@ -29,7 +29,7 @@ class Inventory(commands.Cog):
             description = self.core.format_list([f"{item}{f' (x{user_inv[item]})' if user_inv[item] > 1 else ''}" for item in user_inv]) if user_inv else "Nothing to display.",
             footer = ctx
         )
-        embed.set_thumbnail(url = user.avatar_url)
+        embed.set_thumbnail(url = user.avatar.url)
         return await ctx.send(embed = embed)
 
 # Link

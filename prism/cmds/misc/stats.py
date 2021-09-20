@@ -47,7 +47,7 @@ class Stats(commands.Cog):
             ]),
             inline = False
         )
-        embed.set_thumbnail(url = self.bot.user.avatar_url)
+        embed.set_thumbnail(url = self.bot.user.avatar.url)
         return await ctx.send(embed = embed)
 
 # Link

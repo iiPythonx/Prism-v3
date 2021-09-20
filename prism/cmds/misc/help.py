@@ -46,7 +46,7 @@ class Help(commands.Cog):
 
         # Construct embed
         embed = self.core.embed(footer = ctx)
-        embed.set_thumbnail(url = self.bot.user.avatar_url)
+        embed.set_thumbnail(url = self.bot.user.avatar.url)
 
         # Fetch command list
         attrs = self._fetch_attrs()
@@ -57,7 +57,11 @@ class Help(commands.Cog):
             embed.title = "Prism v3"
             embed.add_field(name = "Categories", value = f"> {self.core.format_list(categories)}", inline = False)
             embed.add_field(name = "Commands", value = f"> {ctx.prefix}help [category]", inline = False)
-            embed.add_field(name = "Credits", value = f"> {config.get('owner')}", inline = False)
+            embed.add_field(
+                name = "Credits",
+                value = f"> {self.core.format_list([config.get('owner').split('#')[0]] + config.get('friends'))}",
+                inline = False
+            )
 
         else:
 

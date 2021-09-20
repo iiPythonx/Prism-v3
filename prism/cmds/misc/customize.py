@@ -20,7 +20,7 @@ class Customize(commands.Cog):
             return await ctx.send(embed = self.core.error("Too many options were provided."))
 
         elif option is None:
-            embed = self.core.embed(title = "Profile Customization", description = f"You can change an option with {ctx.prefix}{ctx.command} <option> <value>\n\nIf you need to use spaces, quote your sentence.\neg. \"Hello, world!\"")
+            embed = self.core.embed(title = "Profile Customization", description = f"You can change an option with `{ctx.prefix}{ctx.command} <option> <value>`\n\nIf you need to use spaces, quote your sentence.\neg. `{ctx.prefix}{ctx.command} bio \"Hello, world!\"`")
             embed.add_field(name = "Available options", value = self.core.format_list(self._valid_keys), inline = False)
             return await ctx.send(embed = embed)
 
