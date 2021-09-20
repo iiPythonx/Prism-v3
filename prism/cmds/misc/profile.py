@@ -26,7 +26,7 @@ class Profile(commands.Cog):
         # Construct embed
         embed = self.core.embed(title = str(user), description = f"\"{info['bio']}\"" if info["bio"] else "", footer = ctx)
         embed.add_field(name = "Balance", value = f"{self.core.format_coins(info['balance'])} coin(s)", inline = False)
-        embed.set_thumbnail(url = user.avatar_url)
+        embed.set_thumbnail(url = user.avatar.url)
         return await ctx.send(embed = embed)
 
 # Link

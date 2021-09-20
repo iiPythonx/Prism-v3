@@ -1,5 +1,6 @@
 {
     "owner": "iiPython#0768",
+    "friends": ["Commuter", "DmmD"],
     "prefix": "p!",
     "db_dir": "db",
     "cmd_path": "prism/cmds"

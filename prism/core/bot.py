@@ -54,6 +54,8 @@ class PrismBot(commands.Bot):
         elif not os.path.exists(cmd_path):
             return self.log("crash", "Command directory does not exist.")
 
+        self.core.storage["cmd_path"] = cmd_path
+
         # Load commands
         for path, _, files in os.walk(cmd_path):
             for file in files:
@@ -67,7 +69,7 @@ class PrismBot(commands.Bot):
                 self.load_extension(modpath)
 
         # Log
-        self.log("success", "Loaded commands in {} second(s).".format(timer.end(tid)))
+        self.log("success", "Loaded {} command(s) in {} second(s).".format(len(self.commands), timer.end(tid)))
 
     # Main events
     async def on_ready(self) -> None:

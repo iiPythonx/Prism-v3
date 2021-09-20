@@ -16,15 +16,16 @@ class Utils(object):
         self.emojis = {
             "checkmark": ":white_check_mark:"
         }
+        self.storage = {}
 
-    def embed(self, **kwargs) -> discord.Embed:
+    def embed(self, footer = None, **kwargs) -> discord.Embed:
         if "color" not in kwargs:
             kwargs["color"] = 0xEB8F6B
 
         embed = discord.Embed(**kwargs)
-        if "footer" in kwargs:
-            author = kwargs["footer"].author
-            embed.set_footer(icon_url = author.avatar_url, text = f"| Requested by {author}.")
+        if footer is not None:
+            author = footer.author
+            embed.set_footer(icon_url = author.avatar.url, text = f"| Requested by {author}.")
 
         return embed
 
