@@ -17,8 +17,8 @@ class Inventory(commands.Cog):
             user = ctx.author
 
         # Handle database
-        user_db = self.bot.db.load_db("users")
-        if not user_db.test_for(("userid", user.id)):
+        db = self.bot.db.load_db("users")
+        if not db.test_for(("userid", user.id)):
             return await ctx.send(embed = self.core.noacc(ctx, user))
 
         user_inv = self.bot.objects["inv"](user.id).items

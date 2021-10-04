@@ -11,7 +11,7 @@ class Help(commands.Cog):
         self.core = bot.core
         self.attr = {"name": "help", "desc": "The help command, allowing you to get basic information.", "cat": "misc", "usage": "help [command/alias/category]"}
 
-        self._cat_long_map = {"misc": "Miscellaneous", "fun": "Entertainment", "currency": "Economy"}
+        self._cat_long_map = {"misc": "Miscellaneous", "fun": "Entertainment", "currency": "Economy", "image": "Images"}
 
     def _fetch_attrs(self) -> list:
         attrs = []

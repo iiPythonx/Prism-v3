@@ -1,6 +1,7 @@
 # Copyright 2021 iiPython
 
 # Modules
+from .images import Images
 from ..database import Database
 
 # Load databases
@@ -37,5 +38,6 @@ class Inventory(object):
 
 # Mapping
 map = {
-    "inv": Inventory
+    "inv": Inventory,
+    "img": Images()
 }

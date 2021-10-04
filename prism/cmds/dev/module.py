@@ -61,7 +61,7 @@ class Module(commands.Cog):
 
         # Handle multiple command states
         embed = self.core.embed(description = f"```py\n{result}\n```")
-        embed.set_author(name = "Module Handler", icon_url = self.bot.user.avatar_url)
+        embed.set_author(name = "Module Handler", icon_url = self.bot.user.avatar.url)
         embed.set_footer(text = f"Completed in {timer.end(tid)} second(s).")
         return await ctx.send(embed = embed)
 
