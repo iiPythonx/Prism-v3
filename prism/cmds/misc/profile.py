@@ -1,7 +1,6 @@
 # Copyright 2021 iiPython
 
 # Modules
-import discord
 from discord.ext import commands
 
 # Command class
@@ -12,16 +11,16 @@ class Profile(commands.Cog):
         self.attr = {"name": "profile", "desc": "Shows somebodies profile.", "cat": "misc", "usage": "profile [user]"}
 
     @commands.command(pass_context = True)
-    async def profile(self, ctx, user: discord.User = None) -> any:
+    async def profile(self, ctx, user = None) -> any:
+        user = self.core.get_user(ctx, user or ctx.author)
         if user is None:
-            user = ctx.author
+            return await ctx.send(embed = self.core.nouser())
 
         # Load database
         db = self.bot.db.load_db("users")
-        if not db.test_for(("userid", user.id)):
-            return await ctx.send(embed = self.core.noacc(ctx, user))
-
         info = db.get(("userid", user.id))
+        if info == -1:
+            return await ctx.send(embed = self.core.noacc(ctx, user))
 
         # Construct embed
         embed = self.core.embed(title = str(user), description = f"\"{info['bio']}\"" if info["bio"] else "", footer = ctx)

@@ -3,6 +3,8 @@
 # Modules
 import os
 import secrets
+import discord
+import iipython as ip
 from .utils import Utils
 from ..database import Database
 from prism.config import config
@@ -13,7 +15,14 @@ from ..utils import (timer, logger, Cooldowns)
 # Bot class
 class PrismBot(commands.Bot):
     def __init__(self, **kwargs) -> None:
-        super().__init__(command_prefix = config.get("prefix"), **kwargs)
+        intents = discord.Intents.default()
+        intents.members = True
+
+        super().__init__(
+            command_prefix = config.get("prefix"),
+            intents = intents,
+            **kwargs
+        )
         self.config = config
 
         # Initialize logging
@@ -77,12 +86,20 @@ class PrismBot(commands.Bot):
 
     async def on_command_error(self, ctx: commands.Context, error: Exception) -> any:
         error_map = {
-            commands.CommandNotFound: "No command with that name exists.",
             commands.BadUnionArgument: "Invalid arguments provided.",
             commands.MemberNotFound: "No such user exists."
         }
         if type(error) in error_map:
             return await ctx.send(embed = self.core.error(error_map[type(error)]))
+
+        elif isinstance(error, commands.CommandNotFound):
+            matches, sm = {}, self.core.storage["sm"]
+            for command in ip.normalize(*list([c.name] + [a for a in c.aliases] for c in self.commands)):
+                sm.set_seqs(command, ctx.message.content.replace(ctx.prefix, "", 1).split(" ")[0])
+                matches[command] = sm.quick_ratio()
+
+            best_guess = max(matches, key = lambda x: matches[x])
+            return await ctx.send(embed = self.core.error(f"Invalid command; did you mean `{best_guess}`?"))
 
         error_code = secrets.token_hex(8)
         self.log("error", f"{error_code} | {ctx.command} | {type(error).__name__}: {error}")

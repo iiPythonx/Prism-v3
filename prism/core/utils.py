@@ -8,6 +8,8 @@ from shutil import which
 from typing import Union
 from prism.config import config
 from discord.ext import commands
+from discord.ext.commands.context import Context
+from Levenshtein.StringMatcher import StringMatcher
 
 # Utility class
 class Utils(object):
@@ -16,7 +18,9 @@ class Utils(object):
         self.emojis = {
             "checkmark": ":white_check_mark:"
         }
-        self.storage = {}
+        self.storage = {"sm": StringMatcher()}
+
+        self.asset_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../assets"))
 
     def embed(self, footer = None, **kwargs) -> discord.Embed:
         if "color" not in kwargs:
@@ -38,6 +42,9 @@ class Utils(object):
     def noacc(self, ctx: commands.Context, user: Union[discord.User, discord.Member] = None) -> discord.Embed:
         return self.error(f"""{"You don't" if user is None or user is not None and user == ctx.author else f"{user.name} doesn't"} have a Prism account{f" (`{ctx.prefix}create` to make one)" if user is None else ""}.""")
 
+    def nouser(self) -> discord.Embed:
+        return self.error("No such user was found.")
+
     def locate_module(self, command: str) -> Union[str, None]:
         path = config.get("cmd_path")
         for path, _, files in os.walk(path):
@@ -48,10 +55,10 @@ class Utils(object):
                     return modpath
 
     def format_coins(self, amount: int) -> str:
-        return "{:20,}".format(amount)
+        return "{:20,}".format(amount).strip()
 
     def format_list(self, list_to_format: list) -> str:
-        return "".join(_ + ", " for _ in list_to_format)[:-2]
+        return ", ".join(list_to_format)
 
     def frmt_name(self, user: Union[discord.User, discord.Member]) -> str:
         return user.name if not hasattr(user, "nick") or hasattr(user, "nick") and user.nick is None else user.nick
@@ -78,3 +85,44 @@ class Utils(object):
             result = result.split(split[0])[split[1]]
 
         return result.rstrip("\n")
+
+    def get_user(self, ctx: Context, user: str) -> Union[discord.User, discord.Member, None]:
+        sm, user = self.storage["sm"], str(user)
+        def convert_to_user(user: str) -> Union[discord.User, None]:  # noqa
+            if not (user[:3] == "<@!" and user[-1] == ">"):
+                return None
+
+            try:
+                return self.bot.get_user(int(user[3:][:-1]))
+
+            except ValueError:
+                return None
+
+        if user is None or (isinstance(user, str) and not user.strip()):
+            return None
+
+        elif not self.bot.intents.members:
+            self.bot.log("warn", "Members intent is not enabled, get_user() will do nothing.")
+            return convert_to_user(user)
+
+        elif len(ctx.guild.members) >= 500:
+            return convert_to_user(user)
+
+        # Handle data storage
+        _user_data = []
+        for mem in ctx.guild.members:
+            data = [str(obj).lower() for obj in [mem.id, mem.name, f"{mem.name}#{mem.discriminator}"]]
+            for item in data:
+
+                # Compare with our input
+                sm.set_seqs(user, item)
+                _user_data.append({"user": mem, "ratio": sm.quick_ratio()})
+
+        if not _user_data:
+            return None
+
+        user = max(_user_data, key = lambda x: x["ratio"])
+        if user["ratio"] < .1:
+            return None
+
+        return user["user"]

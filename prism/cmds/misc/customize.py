@@ -1,9 +1,7 @@
 # Copyright 2021 iiPython
 
 # Modules
-import discord
 from discord.ext import commands
-from discord.utils import sane_wait_for
 
 # Command class
 class Customize(commands.Cog):
