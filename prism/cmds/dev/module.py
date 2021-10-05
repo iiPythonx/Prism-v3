@@ -89,13 +89,11 @@ class Module(commands.Cog):
 
         # Handle autoreload
         self.bot.log("info", "Debugging reloader started.")
+        for command in commands:
+            self.autoreload_cache[command] = ch_count(command)
 
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
-
-            # Loop through commands
-            for command in commands:
-                self.autoreload_cache[command] = ch_count(command)
 
             # Check for a file change
             for command in commands:
@@ -105,7 +103,8 @@ class Module(commands.Cog):
 
                     # Check if file is valid to reload
                     try:
-                        ast.parse(open(command, "r", encoding = "UTF-8").read())
+                        with open(command, "r", encoding = "utf8") as f:
+                            ast.parse(f.read())
 
                         # Reload extension
                         self.unload_module(command.replace(".py", "").replace("/", "."))
