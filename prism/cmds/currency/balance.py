@@ -1,7 +1,6 @@
 # Copyright 2021 iiPython
 
 # Modules
-import discord
 from discord.ext import commands
 
 # Command class
