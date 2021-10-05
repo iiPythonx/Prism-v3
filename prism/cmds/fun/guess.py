@@ -46,12 +46,8 @@ class Guess(commands.Cog):
         msg = await ctx.send(embed = embed)
 
         # Wait for number
-        def check(message):
-            return message.author.id == ctx.author.id and message.channel.id == ctx.channel.id
-
         try:
-            m = await self.bot.wait_for("message", check = check, timeout = 5)
-            m = m.content
+            m = await self.core.get_message(ctx)
             try:
                 if m is None:
                     self.bot.cooldowns.add_cooldown("guess", ctx.author, self._cooldown_time)

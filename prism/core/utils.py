@@ -16,15 +16,26 @@ class Utils(object):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         self.emojis = {
-            "checkmark": ":white_check_mark:"
+            "checkmark": ":white_check_mark:",
         }
-        self.storage = {"sm": StringMatcher()}
+        self.storage = {
+            "sm": StringMatcher(),
+            "accent": "#EB8F6B"
+        }
 
         self.asset_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../assets"))
 
+    def color(self, hex_: str, accent_def: bool = True) -> discord.Color:
+        try:
+            rgb = list(int(hex_.lstrip("#")[i:i + 2], 16) for i in (0, 2, 4))
+            return discord.Color.from_rgb(*rgb)
+
+        except Exception:
+            return self.color(self.storage["accent"])
+
     def embed(self, footer = None, **kwargs) -> discord.Embed:
         if "color" not in kwargs:
-            kwargs["color"] = 0xEB8F6B
+            kwargs["color"] = self.color(self.storage["accent"])
 
         embed = discord.Embed(**kwargs)
         if footer is not None:
@@ -111,7 +122,7 @@ class Utils(object):
         # Handle data storage
         _user_data = []
         for mem in ctx.guild.members:
-            data = [str(obj).lower() for obj in [mem.id, mem.name, f"{mem.name}#{mem.discriminator}"]]
+            data = [str(obj).lower() for obj in [mem.id, mem.name, mem.nick, f"{mem.name}#{mem.discriminator}"]]
             for item in data:
 
                 # Compare with our input
@@ -126,3 +137,20 @@ class Utils(object):
             return None
 
         return user["user"]
+
+    async def get_message(self, ctx, timeout: int = 5) -> str:
+        def check(message):
+            return message.author.id == ctx.author.id and message.channel.id == ctx.channel.id
+
+        m = await self.bot.wait_for("message", check = check, timeout = timeout)
+        return m.content
+
+    async def wait_for_reaction(self, ctx, message, reactions: list, timeout: int = 10) -> str:
+        for r in reactions:
+            await message.add_reaction(r)
+
+        def check(reaction, user):
+            return user.id == ctx.author.id and reaction.message.id == message.id and reaction.emoji in reactions
+
+        m = await self.bot.wait_for("reaction_add", check = check, timeout = timeout)
+        return m

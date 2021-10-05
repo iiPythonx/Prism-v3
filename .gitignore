@@ -4,6 +4,7 @@ __pycache__/
 # Hide secrets :)
 .env
 config.json
+application.yml
 
 # Hide database
 db/

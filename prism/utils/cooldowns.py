@@ -37,6 +37,9 @@ class Cooldowns(object):
             self.cooldowns[user.id][name] = self._grab_time(time)
 
     def on_cooldown(self, name: str, user: Union[discord.User, discord.Member]) -> bool:
+        if self.bot.config.get("cooldowns") is False:
+            return False
+
         if not hasattr(user, "id"):
             raise RuntimeError("provided cooldown user has no id attribute.")
 

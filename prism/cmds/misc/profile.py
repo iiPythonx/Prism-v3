@@ -23,7 +23,12 @@ class Profile(commands.Cog):
             return await ctx.send(embed = self.core.noacc(ctx, user))
 
         # Construct embed
-        embed = self.core.embed(title = str(user), description = f"\"{info['bio']}\"" if info["bio"] else "", footer = ctx)
+        embed = self.core.embed(
+            title = str(user),
+            description = f"\"{info['bio']}\"" if info["bio"] else "",
+            footer = ctx,
+            color = self.core.color(info["accent"])
+        )
         embed.add_field(name = "Balance", value = f"{self.core.format_coins(info['balance'])} coin(s)", inline = False)
         embed.set_thumbnail(url = user.avatar.url)
         return await ctx.send(embed = embed)

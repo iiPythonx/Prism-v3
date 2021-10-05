@@ -12,9 +12,10 @@ class Balance(commands.Cog):
         self.attr = {"name": "balance", "desc": "Checks somebodies account balance.", "cat": "currency", "usage": "balance [user]"}
 
     @commands.command(pass_context = True, aliases = ["bal"])
-    async def balance(self, ctx, user: discord.Member = None) -> any:
+    async def balance(self, ctx, user = None) -> any:
+        user = self.core.get_user(ctx, user or ctx.author)
         if user is None:
-            user = ctx.author
+            return await ctx.send(embed = self.core.nouser())
 
         # Handle database
         db = self.bot.db.load_db("users")

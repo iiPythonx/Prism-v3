@@ -3,6 +3,7 @@
 # Modules
 import os
 import json
+from typing import Any
 from .utils.logging import logger
 
 # Config class
@@ -23,11 +24,17 @@ class Configuration(object):
 
         return raw_config
 
-    def get(self, key: any) -> any:
+    def get(self, key: Any) -> Any:
         if key not in self.config:
             raise KeyError
 
         return self.config[key]
+
+    def set(self, key: Any, value: Any) -> None:
+        self.config[key] = value
+
+    def merge(self, data: dict) -> None:
+        self.config = self.config | data
 
 # Initialization
 config = Configuration()

@@ -16,9 +16,10 @@ class Sock(commands.Cog):
         self._success_msgs = ["rekt", "#pwned", "Imagine getting socked", "Impressive", "GG"]
 
     @commands.command(pass_context = True)
-    async def sock(self, ctx, *, user: discord.Member = None) -> any:
+    async def sock(self, ctx, *, user = None) -> any:
+        user = self.core.get_user(ctx, user or ctx.author)
         if user is None:
-            return await ctx.send(embed = self.core.error("Tell me who you want to sock."))
+            return await ctx.send(embed = self.core.nouser())
 
         elif user == ctx.author:
             return await ctx.send(embed = self.core.error("Why would you want to sock yourself?"))

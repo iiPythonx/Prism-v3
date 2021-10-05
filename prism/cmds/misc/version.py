@@ -26,7 +26,7 @@ class Version(commands.Cog):
             description = f"Current branch: `{curr_branch}`",
             footer = ctx
         )
-        embed.add_field(name = "Last commit", value = f"```\n\"{last_commit}\" (by {last_author})\n```", inline = False)
+        embed.add_field(name = "Last commit", value = f"```\n\"{last_commit}\"\n(by {last_author})\n```", inline = False)
         embed.add_field(name = "Last modified", value = f"```\n{last_modify}\n```", inline = False)
         return await ctx.send(embed = embed)
 
