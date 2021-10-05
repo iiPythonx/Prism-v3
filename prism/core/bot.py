@@ -23,7 +23,6 @@ class PrismBot(commands.Bot):
             intents = intents,
             **kwargs
         )
-        self.config = config
 
         # Initialize logging
         self.logger = logger
@@ -34,6 +33,9 @@ class PrismBot(commands.Bot):
         self.core = Utils(self)
         self.cooldowns = Cooldowns(self)
         self.objects = obj.map
+
+        # Configuration
+        self.config = config
 
         # Handle post-initialization
         self.remove_command("help")
@@ -67,18 +69,22 @@ class PrismBot(commands.Bot):
 
         # Load commands
         for path, _, files in os.walk(cmd_path):
+            if path == cmd_path:
+                continue  # Allows us to manually load certain cogs
+
             for file in files:
                 if not file.endswith(".py"):
                     continue  # Ignore __pycache__ and etc
 
-                relpath = os.path.join(path, file).replace("\\", "/")  # Convert to unix-like path
-                modpath = relpath[:-3].replace("/", ".")  # Convert to Python dot-path
-
-                # Load command
-                self.load_extension(modpath)
+                self.load_cmd(os.path.join(path, file))
 
         # Log
         self.log("success", "Loaded {} command(s) in {} second(s).".format(len(self.commands), timer.end(tid)))
+
+    def load_cmd(self, cmd_path: str) -> None:
+        relpath = cmd_path.replace("\\", "/").replace(os.getcwd().replace("\\", "/"), "").lstrip("/")  # Convert to unix-like path
+        modpath = relpath[:-3].replace("/", ".")  # Convert to Python dot-path
+        self.load_extension(modpath)
 
     # Main events
     async def on_ready(self) -> None:
@@ -94,7 +100,7 @@ class PrismBot(commands.Bot):
 
         elif isinstance(error, commands.CommandNotFound):
             matches, sm = {}, self.core.storage["sm"]
-            for command in ip.normalize(*list([c.name] + [a for a in c.aliases] for c in self.commands)):
+            for command in ip.normalize(*list([c.name] + [a for a in c.aliases] for c in self.commands if not (hasattr(c.cog, "hidden") and c.cog.hidden))):
                 sm.set_seqs(command, ctx.message.content.replace(ctx.prefix, "", 1).split(" ")[0])
                 matches[command] = sm.quick_ratio()
 

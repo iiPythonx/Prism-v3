@@ -10,7 +10,8 @@ class Customize(commands.Cog):
         self.core = bot.core
         self.attr = {"name": "customize", "desc": "Allows you to customize your profile.", "cat": "misc", "usage": "customize <option> <value>"}
 
-        self._valid_keys = ["bio"]
+        self._valid_keys = ["bio", "accent"]
+        self._key_checks = {"accent": lambda v: self.core.color(v)}
 
     @commands.command(pass_context = True, aliases = ["customise"])
     async def customize(self, ctx, option: str = None, value: str = None, *, extra = None) -> any:
@@ -27,6 +28,14 @@ class Customize(commands.Cog):
 
         elif option not in self._valid_keys:
             return await ctx.send(embed = self.core.error("The specified option is not recognized."))
+
+        # Check value
+        try:
+            if option in self._key_checks:
+                self._key_checks[option](value)
+
+        except Exception:
+            return await ctx.send(embed = self.core.error(f"Invalid value provided for `{option}`."))
 
         # Load database
         db = self.bot.db.load_db("users")

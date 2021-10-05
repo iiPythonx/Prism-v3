@@ -26,7 +26,8 @@ cs.execute("""
 CREATE TABLE IF NOT EXISTS users (
     userid integer,
     balance long,
-    bio text
+    bio text,
+    accent text
 )
 """)
 c.commit()
