@@ -2,4 +2,4 @@ rich
 pillow
 python-dotenv
 python-Levenshtein
-git+https://github.com/Rapptz/discord.py
+git+https://github.com/ii-Python/discord

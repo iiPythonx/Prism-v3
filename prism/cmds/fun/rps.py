@@ -34,7 +34,7 @@ class RPS(commands.Cog):
         else:
             return 1
 
-    @commands.command(pass_context = True, aliases = ["heck", "hax"])
+    @commands.command(pass_context = True)
     async def rps(self, ctx) -> any:
         results = []
         for i in range(3):
@@ -55,12 +55,10 @@ class RPS(commands.Cog):
             await msg.edit(embed = em)
 
         # Final embed
-        text = lambda x: {-1: "You", 0: "Tie", 1: "Me"}[x]  # noqa
-        summary = "; ".join(f"{results.index(x) + 1}: {text(x)}" for x in results)
         title = ("You won!" if results.count(-1) > results.count(1) else "") or ("I won!" if results.count(1) > results.count(-1) else "") or "Tie!"
         embed = self.core.embed(
             title = title,
-            description = f"I got {results.count(1)}/3; you got {results.count(-1)}/3.\n{summary}",
+            description = f"I got {results.count(1)}/3; you got {results.count(-1)}/3.",
             footer = ctx
         )
 
