@@ -9,7 +9,10 @@ from .utils.logging import logger
 # Config class
 class Configuration(object):
     def __init__(self) -> None:
-        self.config = self._load_config()
+        self.default = {
+            "debug": False
+        }
+        self.config = self.default | self._load_config()
 
     def _load_config(self) -> dict:
         if not os.path.exists("config.json"):

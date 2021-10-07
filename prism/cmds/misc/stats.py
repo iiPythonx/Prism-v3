@@ -32,8 +32,9 @@ class Stats(commands.Cog):
             value = self._format_sectors([
                 f"Account: {self.bot.user}",
                 f"Server count: {len(self.bot.guilds)} server(s)",
-                f"Bot version: {__version__}",
-                f"dPy version: {discord.__version__}"
+                f"Bot version - v{__version__}",
+                f"Engine version - {self.bot.engine_ver}",
+                f"[Lib](https://github.com/ii-Python/discord) version: {discord.__version__}"
             ]),
             inline = False
         )
