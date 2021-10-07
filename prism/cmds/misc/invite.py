@@ -10,7 +10,7 @@ class InviteButton(discord.ui.View):
         super().__init__()
         self.invite.url = url
 
-    @discord.ui.button(style = discord.ButtonStyle.green, label = "Invite", url = "")
+    @discord.ui.button(label = "Invite", url = "")
     async def invite(self, button: discord.ui.Button, interaction: discord.Interaction) -> None:
         return
 

@@ -27,8 +27,7 @@ class Utils(object):
 
     def color(self, hex_: str, accent_def: bool = True) -> discord.Color:
         try:
-            rgb = list(int(hex_.lstrip("#")[i:i + 2], 16) for i in (0, 2, 4))
-            return discord.Color.from_rgb(*rgb)
+            return discord.Color.from_hex(hex_)
 
         except Exception:
             return self.color(self.storage["accent"])

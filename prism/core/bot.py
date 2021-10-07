@@ -1,4 +1,7 @@
 # Copyright 2021 iiPython
+# Prism Engine - v1.2
+
+__VERSION__ = "1.2a"
 
 # Modules
 import os
@@ -6,6 +9,7 @@ import secrets
 import discord
 import iipython as ip
 from .utils import Utils
+from typing import Union
 from ..database import Database
 from prism.config import config
 from discord.ext import commands
@@ -14,13 +18,15 @@ from ..utils import (timer, logger, Cooldowns)
 
 # Bot class
 class PrismBot(commands.Bot):
-    def __init__(self, **kwargs) -> None:
-        intents = discord.Intents.default()
-        intents.members = True
+    def __init__(self, intents: Union[discord.Intents, None] = None, **kwargs) -> None:
+        if intents is None:
+            intents = discord.Intents.default()
+            intents.members = True
 
         super().__init__(
             command_prefix = config.get("prefix"),
             intents = intents,
+            help_command = None,
             **kwargs
         )
 
@@ -31,14 +37,13 @@ class PrismBot(commands.Bot):
         # Load core
         self.db = Database()
         self.core = Utils(self)
+
+        # Cooldowns + extras
         self.cooldowns = Cooldowns(self)
         self.objects = obj.map
 
-        # Configuration
         self.config = config
-
-        # Handle post-initialization
-        self.remove_command("help")
+        self.engine_ver = __VERSION__
 
     def launch_bot(self) -> None:
         self.log("info", "Launching bot...")
@@ -69,9 +74,6 @@ class PrismBot(commands.Bot):
 
         # Load commands
         for path, _, files in os.walk(cmd_path):
-            if path == cmd_path:
-                continue  # Allows us to manually load certain cogs
-
             for file in files:
                 if not file.endswith(".py"):
                     continue  # Ignore __pycache__ and etc
