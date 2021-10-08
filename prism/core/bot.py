@@ -5,6 +5,7 @@ __VERSION__ = "1.2a"
 
 # Modules
 import os
+import asyncio
 import secrets
 import discord
 import iipython as ip
@@ -92,6 +93,18 @@ class PrismBot(commands.Bot):
     async def on_ready(self) -> None:
         self.log("success", "Logged in as {}.".format(str(self.user)))
 
+    async def on_message(self, message) -> None:
+        cont = message.content
+        if not (cont.strip() and cont.startswith(await self.get_prefix(message))):
+            return
+
+        users = self.db.load_db("users")
+        if users.test_for(("userid", message.author.id)):
+            if users.get(("userid", message.author.id), "blacklisted"):
+                return await message.channel.send(embed = self.core.error("You are blacklisted from Prism."))
+
+        return await self.process_commands(message)
+
     async def on_command_error(self, ctx: commands.Context, error: Exception) -> any:
         error_map = {
             commands.BadUnionArgument: "Invalid arguments provided.",
@@ -107,7 +120,35 @@ class PrismBot(commands.Bot):
                 matches[command] = sm.quick_ratio()
 
             best_guess = max(matches, key = lambda x: matches[x])
-            return await ctx.send(embed = self.core.error(f"Invalid command; did you mean `{best_guess}`?"))
+            message = await ctx.send(embed = self.core.error(f"Invalid command; did you mean `{best_guess}`?"))
+
+            # Check if they actually respond
+            try:
+                usermsg = await self.wait_for(
+                    "message",
+                    check = lambda m: m.author == ctx.author and m.channel == ctx.channel and (m.content and m.content.lower() == "yes"),
+                    timeout = 5
+                )
+                await message.delete()
+                try:
+                    await usermsg.delete()
+
+                except Exception:
+                    pass
+
+                args = " ".join(ctx.message.content.split(" ")[1:])
+                if args:
+                    args = " " + args
+
+                ctx.message.content = f"{ctx.prefix}{best_guess}{args}"
+
+                context = await self.get_context(ctx.message)
+                context.prefix = ctx.prefix
+                context.invoked_with = best_guess
+                return await self.invoke(context)
+
+            except asyncio.exceptions.TimeoutError:
+                return
 
         error_code = secrets.token_hex(8)
         self.log("error", f"{error_code} | {ctx.command} | {type(error).__name__}: {error}")
