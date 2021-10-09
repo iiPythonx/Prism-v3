@@ -105,7 +105,7 @@ class DBConnection(object):
 class Database(object):
     def __init__(self) -> None:
         self._db_cache = {}
-        self._db_dir = os.path.abspath(config.get("db_dir"))
+        self._db_dir = os.path.abspath(config.get(["paths", "db_dir"]))
 
     def load_db(self, name: str) -> DBConnection:
         if not name.endswith(".db"):

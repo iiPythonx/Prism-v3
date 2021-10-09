@@ -1,6 +1,19 @@
 {
-    "owner": "iiPython#0768",
-    "prefix": "p!",
-    "db_dir": "db",
-    "cmd_path": "prism/cmds"
+    "admin": {
+        "owner": "Somebody#0001",
+        "friends": []
+    },
+    "prefix": {
+        "value": "p!",
+        "allow_change": true
+    },
+    "paths": {
+        "db_dir": "db",
+        "cmd_path": "prism/cmds"
+    },
+    "status": {
+        "watching": ["Twitch.tv"],
+        "playing": ["Minecraft"],
+        "enabled": true
+    }
 }

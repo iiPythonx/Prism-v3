@@ -21,7 +21,7 @@ class Inventory(commands.Cog):
         if not db.test_for(("userid", user.id)):
             return await ctx.send(embed = self.core.noacc(ctx, user))
 
-        user_inv = self.bot.objects["inv"](user.id).items
+        user_inv = self.core.inventory(user.id).items
 
         # Construct embed
         embed = self.core.embed(

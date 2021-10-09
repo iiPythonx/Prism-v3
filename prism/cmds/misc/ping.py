@@ -2,7 +2,6 @@
 
 # Modules
 from discord.ext import commands
-from prism.utils.timer import timer
 
 # Command class
 class Ping(commands.Cog):
@@ -15,9 +14,9 @@ class Ping(commands.Cog):
     async def ping(self, ctx) -> any:
 
         # Test API ping
-        tid = timer.start()
+        tid = self.core.timer.start()
         message = await ctx.send(embed = self.core.embed(description = "**Checking ping...**"))
-        api_ping = timer.end(tid, return_as = "ms", as_int = True)
+        api_ping = self.core.timer.end(tid, return_as = "ms", as_int = True)
 
         # Test bot ping
         bot_ping = round(self.bot.latency * 1000)

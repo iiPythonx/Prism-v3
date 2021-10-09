@@ -59,7 +59,7 @@ class Help(commands.Cog):
             embed.add_field(name = "Commands", value = f"> {ctx.prefix}help [category]", inline = False)
             embed.add_field(
                 name = "Credits",
-                value = f"> {self.core.format_list([config.get('owner').split('#')[0]] + config.get('friends'))}",
+                value = f"> {self.core.format_list([self.bot.owner.split('#')[0]] + config.get(['admins', 'friends']))}",
                 inline = False
             )
 

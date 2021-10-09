@@ -4,7 +4,6 @@
 import ast
 import discord
 from discord.ext import commands
-from prism.utils.timer import timer
 
 # Command class
 class Eval(commands.Cog):
@@ -31,7 +30,7 @@ class Eval(commands.Cog):
 
         # Handle embed
         embed = self.core.embed(description = f"```py\n{output}\n```")
-        embed.set_footer(text = f"Completed in {timer.end(timer_tid)} second(s).")
+        embed.set_footer(text = f"Completed in {self.core.timer.end(timer_tid)} second(s).")
         return embed
 
     @commands.command(name = "eval", pass_context = True)
@@ -60,7 +59,7 @@ class Eval(commands.Cog):
         cmd = "\n".join(f"    {i}" for i in cmd.splitlines())
 
         body = f"async def {fn_name}():\n{cmd}"
-        start = timer.start()
+        start = self.core.timer.start()
 
         try:
             parsed = ast.parse(body)

@@ -11,7 +11,7 @@ from prism.config import config
 
 # Check the db folder
 print("[yellow]Initializing databases...")
-db_dir = config.get("db_dir")
+db_dir = config.get(["paths", "db_dir"])
 if not os.path.isdir(db_dir):
     os.mkdir(db_dir)
 
