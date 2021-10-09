@@ -25,7 +25,7 @@ class Config(commands.Cog):
         return None
 
     @commands.command(pass_context = True)
-    @commands.has_guild_permissions(manage_guild = True, administrator = True, manage_roles = True)
+    @commands.has_guild_permissions(manage_guild = True)
     async def config(self, ctx, key: str = None, value: str = None) -> any:
         if key is None:
             embed = self.core.embed(title = "Server Configuration", description = f"You can change an option with `{ctx.prefix}{ctx.command} <option> <value>`\n\nIf you need to use spaces, quote your sentence.\neg. `{ctx.prefix}{ctx.command} prefix \"cheese pizza: \"`")
