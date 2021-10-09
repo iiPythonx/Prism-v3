@@ -4,7 +4,7 @@
 import os
 import json
 from typing import Any
-from .utils.logging import logger
+from .logging import logger
 
 # Config class
 class Configuration(object):
@@ -28,10 +28,15 @@ class Configuration(object):
         return raw_config
 
     def get(self, key: Any) -> Any:
-        if key not in self.config:
-            raise KeyError
+        if isinstance(key, list):
+            value = self.config[key[0]]
+            for k in key[1:]:
+                value = value[k]
 
-        return self.config[key]
+        else:
+            value = self.config[key]
+
+        return value
 
     def set(self, key: Any, value: Any) -> None:
         self.config[key] = value

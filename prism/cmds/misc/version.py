@@ -11,6 +11,8 @@ class Version(commands.Cog):
         self.core = bot.core
         self.attr = {"name": "version", "desc": "Provides the current version information.", "cat": "misc", "usage": "version [branch]"}
 
+        self.github_repo = "https://github.com/ii-Python/Prism-v3"
+
     @commands.command(pass_context = True, aliases = ["ver"])
     async def version(self, ctx) -> any:
 
@@ -25,6 +27,7 @@ class Version(commands.Cog):
         embed = self.core.embed(
             title = f"Prism v{__version__} - Build Info",
             description = f"Current branch: `{curr_branch}`",
+            url = self.github_repo,
             footer = ctx
         )
         embed.add_field(name = "Last commit", value = f"```\n\"{last_commit}\"\n(by {last_author})\n```", inline = False)

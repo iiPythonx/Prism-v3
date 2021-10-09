@@ -7,7 +7,6 @@ import ast
 import asyncio
 import traceback
 from discord.ext import commands
-from prism.utils.timer import timer
 
 # Command class
 class Module(commands.Cog):
@@ -53,7 +52,7 @@ class Module(commands.Cog):
             return await ctx.send(embed = self.core.error("Failed to locate specified module."))
 
         # Handle action
-        tid = timer.start()
+        tid = self.core.timer.start()
         result = {"unload": self.unload_module, "load": self.load_module}[action](module) if action in ["unload", "load"] else None
         if action == "reload":
             self.unload_module(module)
@@ -62,7 +61,7 @@ class Module(commands.Cog):
         # Handle multiple command states
         embed = self.core.embed(description = f"```py\n{result}\n```")
         embed.set_author(name = "Module Handler", icon_url = self.bot.user.avatar.url)
-        embed.set_footer(text = f"Completed in {timer.end(tid)} second(s).")
+        embed.set_footer(text = f"Completed in {self.core.timer.end(tid)} second(s).")
         return await ctx.send(embed = embed)
 
     # Autoreload handler

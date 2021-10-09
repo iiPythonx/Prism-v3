@@ -25,3 +25,5 @@ class Images(object):
         images[0].save(arr, "GIF", save_all = True, append_images = images[1:], optimize = False, duration = duration, loop = 0)
         arr.seek(0)
         return arr
+
+images = Images()

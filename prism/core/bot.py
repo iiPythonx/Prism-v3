@@ -1,7 +1,7 @@
 # Copyright 2021 iiPython
 # Prism Engine - v1.2
 
-__VERSION__ = "1.2a"
+__VERSION__ = "1.2b"
 
 # Modules
 import os
@@ -9,13 +9,13 @@ import asyncio
 import secrets
 import discord
 import iipython as ip
+
 from .utils import Utils
 from typing import Union
+from ..logging import logger
 from ..database import Database
 from prism.config import config
 from discord.ext import commands
-import prism.utils.objects as obj
-from ..utils import (timer, logger, Cooldowns)
 
 # Bot class
 class PrismBot(commands.Bot):
@@ -25,7 +25,7 @@ class PrismBot(commands.Bot):
             intents.members = True
 
         super().__init__(
-            command_prefix = config.get("prefix"),
+            command_prefix = self.get_guild_prefix,
             intents = intents,
             help_command = None,
             **kwargs
@@ -39,11 +39,10 @@ class PrismBot(commands.Bot):
         self.db = Database()
         self.core = Utils(self)
 
-        # Cooldowns + extras
-        self.cooldowns = Cooldowns(self)
-        self.objects = obj.map
-
         self.config = config
+        self.cooldowns = self.core.cooldowns
+
+        self.owner = config.get(["admins", "owner"])
         self.engine_ver = __VERSION__
 
     def launch_bot(self) -> None:
@@ -61,9 +60,13 @@ class PrismBot(commands.Bot):
         self.run(token, reconnect = True)
 
     def load_cmds(self, cmd_path: str = None) -> None:
-        tid = timer.start()
-        if "cmd_path" in config.config and cmd_path is None:
-            cmd_path = config.get("cmd_path")
+        tid = self.core.timer.start()
+        if cmd_path is None:
+            try:
+                cmd_path = config.get(["paths", "cmd_path"])
+
+            except IndexError:
+                pass
 
         if not cmd_path:
             return self.log("crash", "No command directory specified to load from.")
@@ -79,15 +82,21 @@ class PrismBot(commands.Bot):
                 if not file.endswith(".py"):
                     continue  # Ignore __pycache__ and etc
 
-                self.load_cmd(os.path.join(path, file))
+                cmd_path = os.path.join(path, file)
+                relpath = cmd_path.replace("\\", "/").replace(os.getcwd().replace("\\", "/"), "").lstrip("/")  # Convert to unix-like path
+                modpath = relpath[:-3].replace("/", ".")  # Convert to Python dot-path
+
+                self.load_extension(modpath)
 
         # Log
-        self.log("success", "Loaded {} command(s) in {} second(s).".format(len(self.commands), timer.end(tid)))
+        self.log("success", "Loaded {} command(s) in {} second(s).".format(len(self.commands), self.core.timer.end(tid)))
 
-    def load_cmd(self, cmd_path: str) -> None:
-        relpath = cmd_path.replace("\\", "/").replace(os.getcwd().replace("\\", "/"), "").lstrip("/")  # Convert to unix-like path
-        modpath = relpath[:-3].replace("/", ".")  # Convert to Python dot-path
-        self.load_extension(modpath)
+    def get_guild_prefix(self, bot, message: discord.Message) -> str:
+        guilds = self.db.load_db("guilds")
+        if not guilds.test_for(("id", message.guild.id)):
+            return config.get(["prefix", "value"])
+
+        return guilds.get(("id", message.guild.id), "prefix")
 
     # Main events
     async def on_ready(self) -> None:
@@ -96,6 +105,9 @@ class PrismBot(commands.Bot):
     async def on_message(self, message) -> None:
         cont = message.content
         if not (cont.strip() and cont.startswith(await self.get_prefix(message))):
+            return
+
+        elif message.guild is None:
             return
 
         users = self.db.load_db("users")
@@ -107,11 +119,12 @@ class PrismBot(commands.Bot):
 
     async def on_command_error(self, ctx: commands.Context, error: Exception) -> any:
         error_map = {
-            commands.BadUnionArgument: "Invalid arguments provided.",
-            commands.MemberNotFound: "No such user exists."
+            commands.BadUnionArgument: lambda e: "Invalid arguments provided.",
+            commands.MemberNotFound: lambda e: "No such user exists.",
+            commands.MissingPermissions: lambda e: "You need the following permissions to run this:\n" + ", ".join([_ for _ in " ".join(e.replace(",", "").split(" ")[3:][:-5]).split(" and ")])
         }
         if type(error) in error_map:
-            return await ctx.send(embed = self.core.error(error_map[type(error)]))
+            return await ctx.send(embed = self.core.error(error_map[type(error)](str(error))))
 
         elif isinstance(error, commands.CommandNotFound):
             matches, sm = {}, self.core.storage["sm"]
@@ -155,7 +168,7 @@ class PrismBot(commands.Bot):
 
         return await ctx.send(
             embed = self.core.error(
-                f"An unexpected error has occured, please report this to {config.get('owner')}.\nError code: `{error_code}`",
+                f"An unexpected error has occured, please report this to {self.owner}.\nError code: `{error_code}`",
                 syserror = True
             )
         )

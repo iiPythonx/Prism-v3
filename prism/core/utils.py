@@ -6,24 +6,35 @@ import discord
 import subprocess
 from shutil import which
 from typing import Union
+
+from discord.ext.commands.core import cooldown
 from prism.config import config
 from discord.ext import commands
 from discord.ext.commands.context import Context
 from Levenshtein.StringMatcher import StringMatcher
 
+from .modules.timer import timer
+from .modules.images import images
+from .modules.cooldowns import Cooldowns
+from .modules.inventory import Inventory
+
 # Utility class
 class Utils(object):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.emojis = {
-            "checkmark": ":white_check_mark:",
-        }
+        self.emojis = {"checkmark": ":white_check_mark:"}
         self.storage = {
             "sm": StringMatcher(),
             "accent": "#EB8F6B"
         }
 
         self.asset_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../assets"))
+
+        # Modules
+        self.timer = timer
+        self.images = images
+        self.inventory = Inventory
+        self.cooldowns = Cooldowns(self)
 
     def color(self, hex_: str, accent_def: bool = True) -> discord.Color:
         try:

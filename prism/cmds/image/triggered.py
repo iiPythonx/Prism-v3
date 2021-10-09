@@ -14,7 +14,7 @@ class Triggered(commands.Cog):
         self.core = bot.core
         self.attr = {"name": "triggered", "desc": "Is it just me, or are they triggered?", "cat": "image", "usage": "triggered [user]"}
 
-        self.im = self.bot.objects["img"]
+        self.im = self.core.images
 
     @commands.command(pass_context = True)
     async def triggered(self, ctx, user = None) -> any:
