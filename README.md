@@ -1,20 +1,83 @@
 ## Prism v3 - the final version
 ---
 
-### Installation
+Welcome to the Prism v3 repository, hosting the code for Prism v3.  
+Prism is a self-hosted bot, but it has a public instance hosted by me.
+
 ---
-1. Ensure you have the requirements:
-  - Python 3.7+ (3.9 or above recommended | https://python.org)
-  - Git (https://git-scm.org) 
 
-2. Clone the repository
-  - `git clone https://github.com/ii-Python/Prism-v3.git`
-  - `cd Prism-v3`
+### 🧰 Setup
 
-3. Install Python dependencies
-  - `python(3) -m pip install -U -r reqs.txt`
+Before you start the setup process, you need to install the needed requirements.  
+Please note these commands may change depending on your environment.
 
-4. Create the .env file
-  - `TOKEN = "discord token"`
+You require the following (before being able to continue at all):
+- Python 3.8+ (**3.9+ recommended**); download it from [python.org](https://python.org)
+- Git; download it from [git-scm.com](https://git-scm.com)
 
-**Automatic setup script coming soon:tm:**
+The following script should setup the base repository:
+```
+git clone https://github.com/ii-Python/Prism-v3
+cd Prism-v3
+python3 -m pip install -r reqs.txt
+mv example_config.json config.json
+```
+
+### 🔧 Configuration
+
+Before you actually use Prism, you need to configure it.  
+This process requires both a `.env` file as well as a `config.json` file.
+
+To setup the `.env`, grab your [discord bot token](https://discord.com/developers/applications), and place it like so:
+```
+TOKEN = "YOUR DISCORD BOT TOKEN"
+```
+
+The `config.json` should look like the following:
+```json
+{
+    "admin": {
+        "owner": "Somebody#0001",
+        "friends": []
+    },
+    "prefix": {
+        "value": "p!",
+        "allow_change": true
+    },
+    "paths": {
+        "db_dir": "db",
+        "cmd_path": "prism/cmds"
+    },
+    "status": {
+        "watching": ["Twitch.tv"],
+        "playing": ["Minecraft"],
+        "enabled": true
+    }
+}
+```
+
+The following are required:
+- `admin/owner`, which is used in the help command (among other places)
+- `prefix/value`, which is the bot prefix
+- `prefix/allow_change`, which toggles whether users can change their server prefixes or not
+- `paths/db_dir`, the database folder location
+- `paths/cmd_path`, the command folder location
+
+The rest of the options are up to you to tweak on your own accord.  
+Launching the bot is as simple as running `python3 launch.py`
+
+---
+To enable debug mode (which features an autoreload feature), pass `--debug` to `launch.py`.  
+**Please note, enabling debug mode can drastically increase memory usage when lots of commands are loaded.**
+
+### 👥 Credits
+
+| iiPython    | DmmD        | Emy          |
+| ----------- | ----------- | ------------ |
+| ![iiPython](https://avatars.githubusercontent.com/u/35084023?v=4&size=60) | ![Dm123321_31mD](https://media.discordapp.net/attachments/687043700169244763/897972274433515540/Dm123321_31mD_Round.png?width=60&height=60) | ![Emy](https://avatars.githubusercontent.com/u/69433142?v=4&size=60)
+
+
+### 📝 License
+
+Prism is listed under the MIT license, more information [here](https://opensource.org/licenses/MIT).  
+LICENSE.txt contains the raw license.
