@@ -1,6 +1,8 @@
 ## Prism v3 - the final version
 ---
 
+![](https://img.shields.io/github/commit-activity/m/ii-Python/Prism-v3) ![](https://img.shields.io/github/languages/code-size/ii-Python/Prism-v3) ![](https://img.shields.io/tokei/lines/github/ii-Python/Prism-v3)
+
 Welcome to the Prism v3 repository, hosting the code for Prism v3.  
 Prism is a self-hosted bot, but it has a public instance hosted by me.
 
