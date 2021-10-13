@@ -67,7 +67,10 @@ class Utils(object):
         return self.error("No such user was found.")
 
     def locate_module(self, command: str) -> Union[str, None]:
-        path = config.get("cmd_path")
+        path = self.storage.get("cmd_path", None)
+        if path is None:
+            return None
+
         for path, _, files in os.walk(path):
             for file in files:
                 if file.split(".py")[0] == command:

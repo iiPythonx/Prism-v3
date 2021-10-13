@@ -24,7 +24,7 @@ class Balance(commands.Cog):
         bal = db.get(("userid", user.id), "balance")
 
         # Handle embed
-        embed = self.core.small_embed(f"{'You have' if user == ctx.author else f'{user.nick if user.nick is not None else user.name} has'} {bal} coin(s).", footer = ctx)
+        embed = self.core.small_embed(f"{'You have' if user == ctx.author else f'{user.nick if user.nick is not None else user.name} has'} {self.core.format_coins(bal)} coin(s).", footer = ctx)
         embed.set_author(name = "Balance")
         return await ctx.send(embed = embed)
 
