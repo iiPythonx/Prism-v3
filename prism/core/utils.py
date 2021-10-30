@@ -6,9 +6,6 @@ import discord
 import subprocess
 from shutil import which
 from typing import Union
-
-from discord.ext.commands.core import cooldown
-from prism.config import config
 from discord.ext import commands
 from discord.ext.commands.context import Context
 from Levenshtein.StringMatcher import StringMatcher
@@ -139,7 +136,7 @@ class Utils(object):
             for item in data:
 
                 # Compare with our input
-                sm.set_seqs(user, item)
+                sm.set_seqs(user.lower(), item)
                 _user_data.append({"user": mem, "ratio": sm.quick_ratio()})
 
         if not _user_data:

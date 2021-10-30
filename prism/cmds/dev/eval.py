@@ -4,6 +4,7 @@
 import ast
 import discord
 from discord.ext import commands
+from discord.utils import time_snowflake
 
 # Command class
 class Eval(commands.Cog):
@@ -24,7 +25,7 @@ class Eval(commands.Cog):
         if isinstance(body[-1], ast.With):
             self.insert_returns(body[-1].body)
 
-    def _eval_(self, output: str = None, timer_tid: int = 0) -> discord.Embed:
+    def _eval_(self, output: str = None, timer_tid: str = "") -> discord.Embed:
         if not output:
             output = "[no output]"
 
@@ -60,7 +61,6 @@ class Eval(commands.Cog):
 
         body = f"async def {fn_name}():\n{cmd}"
         start = self.core.timer.start()
-
         try:
             parsed = ast.parse(body)
             body = parsed.body[0].body
@@ -70,10 +70,18 @@ class Eval(commands.Cog):
             exec(compile(parsed, filename = "<ast>", mode = "exec"), env)
             result = (await eval(f"{fn_name}()", env))
 
-            return await ctx.send(embed = self._eval_(result, start))
+            try:
+                return await ctx.send(embed = self._eval_(result, start))
+
+            except discord.HTTPException:
+                return await ctx.send(embed = self.core.error("Output is too large to send."))
 
         except Exception as e:
-            return await ctx.send(embed = self._eval_(e, start))
+            try:
+                return await ctx.send(embed = self._eval_(e, start))
+
+            except discord.HTTPException:
+                return await ctx.send(embed = self.core.error("Output is too large to send."))
 
 # Link
 def setup(bot) -> None:

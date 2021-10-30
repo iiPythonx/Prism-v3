@@ -2,6 +2,7 @@
 
 # Modules
 import os
+import sys
 import psutil
 import discord
 from prism import __version__
@@ -33,8 +34,7 @@ class Stats(commands.Cog):
                 f"Account: {self.bot.user}",
                 f"Server count: {len(self.bot.guilds)} server(s)",
                 f"Bot version - v{__version__}",
-                f"Engine version - {self.bot.engine_ver}",
-                f"[Lib](https://github.com/ii-Python/discord) version: {discord.__version__}"
+                f"[Library](https://github.com/ii-Python/discord) version: {discord.__version__}"
             ]),
             inline = False
         )
@@ -49,6 +49,11 @@ class Stats(commands.Cog):
             inline = False
         )
         embed.set_thumbnail(url = self.bot.user.avatar.url)
+
+        # Handle debug mode
+        if "--debug" in sys.argv:
+            embed.description = "WARNING: Debug mode is currently active."
+
         return await ctx.send(embed = embed)
 
 # Link
