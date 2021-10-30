@@ -1,7 +1,5 @@
 # Copyright 2021 iiPython
-# Prism Engine - v1.2
-
-__VERSION__ = "1.2b"
+# Prism Internal Engine
 
 # Modules
 import os
@@ -43,7 +41,6 @@ class PrismBot(commands.Bot):
         self.cooldowns = self.core.cooldowns
 
         self.owner = config.get(["admins", "owner"])
-        self.engine_ver = __VERSION__
 
     def launch_bot(self) -> None:
         self.log("info", "Launching bot...")
@@ -121,7 +118,8 @@ class PrismBot(commands.Bot):
         error_map = {
             commands.BadUnionArgument: lambda e: "Invalid arguments provided.",
             commands.MemberNotFound: lambda e: "No such user exists.",
-            commands.MissingPermissions: lambda e: "You need the following permissions to run this:\n" + ", ".join([_ for _ in " ".join(e.replace(",", "").split(" ")[3:][:-5]).split(" and ")])
+            commands.MissingPermissions: lambda e: "You need the following permissions to run this:\n" + ", ".join([_ for _ in " ".join(e.replace(",", "").split(" ")[3:][:-5]).split(" and ")]),
+            commands.NSFWChannelRequired: lambda e: "This command only works in NSFW channels."
         }
         if type(error) in error_map:
             return await ctx.send(embed = self.core.error(error_map[type(error)](str(error))))

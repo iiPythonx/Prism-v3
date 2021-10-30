@@ -1,5 +1,7 @@
 rich
 pillow
+pyfiglet
+iipythonpy
 python-dotenv
 python-Levenshtein
 git+https://github.com/ii-Python/discord
