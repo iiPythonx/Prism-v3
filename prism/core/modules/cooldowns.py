@@ -9,8 +9,8 @@ from datetime import datetime, timedelta
 
 # Cooldowns object
 class Cooldowns(object):
-    def __init__(self, bot: commands.Bot) -> None:
-        self.bot = bot
+    def __init__(self, core) -> None:
+        self.core = core
         self.cooldowns = {}
 
     def _grab_time(self, time: int) -> datetime:
@@ -69,4 +69,4 @@ class Cooldowns(object):
 
         # Construct embed
         remaining = self._format_time(round((self.cooldowns[user.id][name] - datetime.now()).total_seconds()))
-        return self.bot.core.error(f"You are on cooldown. {remaining} remaining.")
+        return self.core.error(f"You are on cooldown. {remaining} remaining.")
