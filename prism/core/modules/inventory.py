@@ -12,7 +12,7 @@ class Inventory(object):
         self.owner_id = owner_id
         self.items = self._load_inv()
 
-    def _load_inv(self) -> list:
+    def _load_inv(self) -> dict:
         data = db.getall(("userid", self.owner_id))
         if data is None:
             return {}

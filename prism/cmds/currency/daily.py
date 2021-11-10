@@ -9,18 +9,17 @@ class Daily(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "daily", "desc": "Get free coins everyday.", "cat": "currency", "usage": "daily"}
 
         self._cooldown = 86400
 
-    @commands.command(pass_context = True)
+    @commands.slash_command(description = "Get free coins everyday.", category = "currency")
     async def daily(self, ctx) -> any:
         db = self.bot.db.load_db("users")
         if not db.test_for(("userid", ctx.author.id)):
-            return await ctx.send(embed = self.core.noacc(ctx, ctx.author))
+            return await ctx.respond(embed = self.core.noacc(ctx, ctx.author))
 
         elif self.bot.cooldowns.on_cooldown("daily", ctx.author):
-            return await ctx.send(embed = self.bot.cooldowns.cooldown_text("daily", ctx.author))
+            return await ctx.respond(embed = self.bot.cooldowns.cooldown_text("daily", ctx.author))
 
         bal = db.get(("userid", ctx.author.id), "balance")
         try:
@@ -34,7 +33,7 @@ class Daily(commands.Cog):
 
         # Handle embed
         embed = self.core.small_embed(f"You redeemed `{self.core.format_coins(earn)}` coin(s).", footer = ctx)
-        return await ctx.send(embed = embed)
+        return await ctx.respond(embed = embed)
 
 # Link
 def setup(bot) -> None:

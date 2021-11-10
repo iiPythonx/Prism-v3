@@ -2,40 +2,24 @@
 
 # Modules
 from discord.ext import commands
+from discord.commands import Option
 
 # Command class
 class Customize(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "customize", "desc": "Allows you to customize your profile.", "cat": "misc", "usage": "customize <option> <value>"}
 
-        self._valid_keys = ["bio", "accent"]
         self._key_checks = {"accent": lambda v: self.core.color(v)}
 
-    @commands.command(pass_context = True, aliases = ["customise"])
-    async def customize(self, ctx, option: str = None, value: str = None, *, extra = None) -> any:
-        if extra is not None:
-            return await ctx.send(embed = self.core.error("Too many options were provided."))
-
-        elif option is None:
-            embed = self.core.embed(title = "Profile Customization", description = f"You can change an option with `{ctx.prefix}{ctx.command} <option> <value>`\n\nIf you need to use spaces, quote your sentence.\neg. `{ctx.prefix}{ctx.command} bio \"Hello, world!\"`")
-            embed.add_field(name = "Available options", value = self.core.format_list(self._valid_keys), inline = False)
-            return await ctx.send(embed = embed)
-
-        elif value is None:
-            return await ctx.send(embed = self.core.error(f"Please specify a value for option '{option}'."))
-
-        elif option not in self._valid_keys:
-            return await ctx.send(embed = self.core.error("The specified option is not recognized."))
-
-        # Check value
+    @commands.slash_command(description = "Customize your profile.", category = "misc")
+    async def customize(self, ctx, option: Option(str, "The option you wish to change", choices = ["bio", "accent"]), value: Option(str, "The new value")) -> any:  # noqa
         try:
             if option in self._key_checks:
                 self._key_checks[option](value)
 
         except Exception:
-            return await ctx.send(embed = self.core.error(f"Invalid value provided for `{option}`."))
+            return await ctx.respond(embed = self.core.error(f"Invalid value provided for `{option}`."))
 
         # Load database
         db = self.bot.db.load_db("users")
@@ -45,7 +29,7 @@ class Customize(commands.Cog):
         db.update({option: value}, ("userid", ctx.author.id))
 
         # Finish up
-        return await ctx.send(embed = self.core.small_embed("Profile successfully updated."))
+        return await ctx.respond(embed = self.core.small_embed("Profile successfully updated."))
 
 # Link
 def setup(bot) -> None:

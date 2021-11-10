@@ -9,7 +9,6 @@ class Beg(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "beg", "desc": "Beg the rich for money.", "cat": "currency", "usage": "beg"}
 
         self.people = [
             {"name": "Rick Astley", "quote": lambda: "never gonna " + random.choice(["give you up", "let you down", "run around and desert you"])},
@@ -21,14 +20,14 @@ class Beg(commands.Cog):
             {"name": "Steve Jobs", "quote": lambda: "have you bought the iPhone 14S Pro Max Lite Premium SE yet?"}
         ]
 
-    @commands.command(pass_context = True)
+    @commands.slash_command(description = "Beg the rich for money.", category = "currency")
     async def beg(self, ctx) -> any:
         db = self.bot.db.load_db("users")
         if not db.test_for(("userid", ctx.author.id)):
-            return await ctx.send(embed = self.core.noacc(ctx, ctx.author))
+            return await ctx.respond(embed = self.core.noacc(ctx, ctx.author))
 
         elif self.bot.cooldowns.on_cooldown("beg", ctx.author):
-            return await ctx.send(embed = self.bot.cooldowns.cooldown_text("beg", ctx.author))
+            return await ctx.respond(embed = self.bot.cooldowns.cooldown_text("beg", ctx.author))
 
         bal = db.get(("userid", ctx.author.id), "balance")
         earn = random.randint(84, 213)
@@ -43,7 +42,7 @@ class Beg(commands.Cog):
             description = f"\"{person['quote']()}\"",
             footer = ctx
         )
-        return await ctx.send(embed = embed)
+        return await ctx.respond(embed = embed)
 
 # Link
 def setup(bot) -> None:

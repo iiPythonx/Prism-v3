@@ -8,14 +8,13 @@ class Ping(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "ping", "desc": "Displays the bots ping time.", "cat": "misc", "usage": "ping"}
 
-    @commands.command(pass_context = True)
+    @commands.slash_command(description = "Check the ping times", category = "misc")
     async def ping(self, ctx) -> any:
 
         # Test API ping
         tid = self.core.timer.start()
-        message = await ctx.send(embed = self.core.embed(description = "**Checking ping...**"))
+        message = await ctx.respond(embed = self.core.embed(description = "**Checking ping...**"))
         api_ping = self.core.timer.end(tid, return_as = "ms", as_int = True)
 
         # Test bot ping

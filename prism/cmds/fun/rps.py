@@ -10,7 +10,6 @@ class RPS(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "rps", "desc": "Play Rock Paper Scissors.", "cat": "fun", "usage": "rps"}
 
         self._resp = ["🪨", "📰", "✂️"]
         self._resdict = {-1: "You won!", 0: "Tie!", 1: "I won!"}
@@ -34,8 +33,9 @@ class RPS(commands.Cog):
         else:
             return 1
 
-    @commands.command(pass_context = True)
+    @commands.slash_command(description = "Play Rock Paper Scissors.", category = "fun")
     async def rps(self, ctx) -> any:
+        await ctx.respond(embed = self.core.embed(title = "Now playing Rock Paper Scissors..."))
         results = []
         for i in range(3):
             em = self.core.embed(title = f"Round {i + 1}")
@@ -44,7 +44,7 @@ class RPS(commands.Cog):
                 reaction = await self.core.wait_for_reaction(ctx, msg, self._resp)
 
             except asyncio.exceptions.TimeoutError:
-                return await ctx.send(embed = self.core.error("You didn't respond in time."))
+                return await ctx.respond(embed = self.core.error("You didn't respond in time."))
 
             ans = self.pick()
             reaction = reaction[0].emoji

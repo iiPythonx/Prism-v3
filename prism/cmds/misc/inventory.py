@@ -3,18 +3,17 @@
 # Modules
 import discord
 from discord.ext import commands
+from discord.commands import Option
 
 # Command class
 class Inventory(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "inventory", "desc": "Displays a users inventory.", "cat": "misc", "usage": "inventory [user]"}
 
-    @commands.command(pass_context = True, aliases = ["inv"])
-    async def inventory(self, ctx, user: discord.User = None) -> any:
-        if user is None:
-            user = ctx.author
+    @commands.slash_command(description = "Lists someones inventory.", category = "misc")
+    async def inventory(self, ctx, user: Option(discord.Member, "The user to view", required = False) = None) -> any:
+        user = user or ctx.author
 
         # Handle database
         db = self.bot.db.load_db("users")
@@ -22,15 +21,16 @@ class Inventory(commands.Cog):
             return await ctx.send(embed = self.core.noacc(ctx, user))
 
         user_inv = self.core.inventory(user.id).items
+        print(user_inv)
 
         # Construct embed
         embed = self.core.embed(
-            title = f"""{f"{user.name}'s " if user != ctx.author else "Your "}Inventory""",
+            title = f"""{f"{self.core.frmt_name(user)}'s " if user != ctx.author else "Your "}Inventory""",
             description = self.core.format_list([f"{item}{f' (x{user_inv[item]})' if user_inv[item] > 1 else ''}" for item in user_inv]) if user_inv else "Nothing to display.",
             footer = ctx
         )
         embed.set_thumbnail(url = user.avatar.url)
-        return await ctx.send(embed = embed)
+        return await ctx.respond(embed = embed)
 
 # Link
 def setup(bot) -> None:

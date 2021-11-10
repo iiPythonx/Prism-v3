@@ -66,7 +66,7 @@ class DBConnection(object):
             table = self.db_name
 
         if not self.test_for(identifier, table):
-            return -1
+            return None
 
         # Grab data
         self.cursor.execute(f"SELECT * FROM {table} WHERE {identifier[0]}=?", (identifier[1],))
@@ -81,7 +81,7 @@ class DBConnection(object):
             table = self.db_name
 
         if not self.test_for(identifier, table):
-            return -1
+            return None
 
         # Grab data
         self.cursor.execute(f"SELECT * FROM {table} WHERE {identifier[0]}=?", (identifier[1],))

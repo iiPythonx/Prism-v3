@@ -6,21 +6,19 @@ import random
 import discord
 from PIL import Image
 from discord.ext import commands
+from discord.commands import Option
 
 # Command class
 class Triggered(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "triggered", "desc": "Is it just me, or are they triggered?", "cat": "image", "usage": "triggered [user]"}
 
         self.im = self.core.images
 
-    @commands.command(pass_context = True)
-    async def triggered(self, ctx, user = None) -> any:
-        user = self.core.get_user(ctx, user or ctx.author)
-        if user is None:
-            return await ctx.send(embed = self.core.nouser())
+    @commands.slash_command(description = "Is it just me, or are they triggered?", category = "image")
+    async def triggered(self, ctx, user: Option(discord.Member, "The user to make triggered", required = False)) -> any:
+        user = user or ctx.author
 
         # Initialization
         image = self.im.imagefromURL(user.avatar.url).resize((216, 216), Image.ANTIALIAS)
@@ -40,7 +38,7 @@ class Triggered(commands.Cog):
         data = self.im.compileGIF(images, 3)
 
         # Send the image
-        return await ctx.send(file = discord.File(data, "triggered.gif"))
+        return await ctx.respond(file = discord.File(data, "triggered.gif"))
 
 # Link
 def setup(bot) -> None:
