@@ -81,7 +81,7 @@ class Utils(object):
     def format_list(self, list_to_format: list) -> str:
         return ", ".join(list_to_format)
 
-    def frmt_name(self, user: Union[discord.User, discord.Member]) -> str:
+    def frmt_name(self, user: discord.Member) -> str:
         return user.name if not hasattr(user, "nick") or hasattr(user, "nick") and user.nick is None else user.nick
 
     def scale_size(self, bytes: int, suffix: str = "B", add_suffix: bool = True) -> str:
@@ -106,47 +106,6 @@ class Utils(object):
             result = result.split(split[0])[split[1]]
 
         return result.rstrip("\n")
-
-    def get_user(self, ctx: Context, user: str) -> Union[discord.User, discord.Member, None]:
-        sm, user = self.storage["sm"], str(user)
-        def convert_to_user(user: str) -> Union[discord.User, None]:  # noqa
-            if not (user[:3] == "<@!" and user[-1] == ">"):
-                return None
-
-            try:
-                return self.bot.get_user(int(user[3:][:-1]))
-
-            except ValueError:
-                return None
-
-        if user is None or (isinstance(user, str) and not user.strip()):
-            return None
-
-        elif not self.bot.intents.members:
-            self.bot.log("warn", "Members intent is not enabled, get_user() will do nothing.")
-            return convert_to_user(user)
-
-        elif len(ctx.guild.members) >= 500:
-            return convert_to_user(user)
-
-        # Handle data storage
-        _user_data = []
-        for mem in ctx.guild.members:
-            data = [str(obj).lower() for obj in [mem.id, mem.name, mem.nick, f"{mem.name}#{mem.discriminator}"]]
-            for item in data:
-
-                # Compare with our input
-                sm.set_seqs(user.lower(), item)
-                _user_data.append({"user": mem, "ratio": sm.quick_ratio()})
-
-        if not _user_data:
-            return None
-
-        user = max(_user_data, key = lambda x: x["ratio"])
-        if user["ratio"] < .1:
-            return None
-
-        return user["user"]
 
     async def get_message(self, ctx, timeout: int = 5) -> str:
         def check(message):

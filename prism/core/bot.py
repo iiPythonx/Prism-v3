@@ -23,7 +23,6 @@ class PrismBot(commands.Bot):
             intents.members = True
 
         super().__init__(
-            command_prefix = self.get_guild_prefix,
             intents = intents,
             help_command = None,
             **kwargs
@@ -85,36 +84,13 @@ class PrismBot(commands.Bot):
 
                 self.load_extension(modpath)
 
-        # Log
-        self.log("success", "Loaded {} command(s) in {} second(s).".format(len(self.commands), self.core.timer.end(tid)))
-
-    def get_guild_prefix(self, bot, message: discord.Message) -> str:
-        guilds = self.db.load_db("guilds")
-        if not guilds.test_for(("id", message.guild.id)):
-            return config.get(["prefix", "value"])
-
-        return guilds.get(("id", message.guild.id), "prefix")
+        self.log("success", "Loaded commands in {} second(s).".format(self.core.timer.end(tid)))
 
     # Main events
     async def on_ready(self) -> None:
         self.log("success", "Logged in as {}.".format(str(self.user)))
 
-    async def on_message(self, message) -> None:
-        cont = message.content
-        if not (cont.strip() and cont.startswith(await self.get_prefix(message))):
-            return
-
-        elif message.guild is None:
-            return
-
-        users = self.db.load_db("users")
-        if users.test_for(("userid", message.author.id)):
-            if users.get(("userid", message.author.id), "blacklisted"):
-                return await message.channel.send(embed = self.core.error("You are blacklisted from Prism."))
-
-        return await self.process_commands(message)
-
-    async def on_command_error(self, ctx: commands.Context, error: Exception) -> any:
+    async def on_application_command_error(self, ctx: commands.Context, error: Exception) -> any:
         error_map = {
             commands.BadUnionArgument: lambda e: "Invalid arguments provided.",
             commands.MemberNotFound: lambda e: "No such user exists.",
@@ -124,47 +100,10 @@ class PrismBot(commands.Bot):
         if type(error) in error_map:
             return await ctx.send(embed = self.core.error(error_map[type(error)](str(error))))
 
-        elif isinstance(error, commands.CommandNotFound):
-            matches, sm = {}, self.core.storage["sm"]
-            for command in ip.normalize(*list([c.name] + [a for a in c.aliases] for c in self.commands if not (hasattr(c.cog, "hidden") and c.cog.hidden))):
-                sm.set_seqs(command, ctx.message.content.replace(ctx.prefix, "", 1).split(" ")[0])
-                matches[command] = sm.quick_ratio()
-
-            best_guess = max(matches, key = lambda x: matches[x])
-            message = await ctx.send(embed = self.core.error(f"Invalid command; did you mean `{best_guess}`?"))
-
-            # Check if they actually respond
-            try:
-                usermsg = await self.wait_for(
-                    "message",
-                    check = lambda m: m.author == ctx.author and m.channel == ctx.channel and (m.content and m.content.lower() == "yes"),
-                    timeout = 5
-                )
-                await message.delete()
-                try:
-                    await usermsg.delete()
-
-                except Exception:
-                    pass
-
-                args = " ".join(ctx.message.content.split(" ")[1:])
-                if args:
-                    args = " " + args
-
-                ctx.message.content = f"{ctx.prefix}{best_guess}{args}"
-
-                context = await self.get_context(ctx.message)
-                context.prefix = ctx.prefix
-                context.invoked_with = best_guess
-                return await self.invoke(context)
-
-            except asyncio.exceptions.TimeoutError:
-                return
-
         error_code = secrets.token_hex(8)
         self.log("error", f"{error_code} | {ctx.command} | {type(error).__name__}: {error}")
 
-        return await ctx.send(
+        return await ctx.respond(
             embed = self.core.error(
                 f"An unexpected error has occured, please report this to {self.owner}.\nError code: `{error_code}`",
                 syserror = True

@@ -9,11 +9,9 @@ class Version(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "version", "desc": "Provides the current version information.", "cat": "misc", "usage": "version [branch]"}
-
         self.github_repo = "https://github.com/ii-Python/Prism-v3"
 
-    @commands.command(pass_context = True, aliases = ["ver"])
+    @commands.slash_command(description = "Show Prism's version.", category = "misc")
     async def version(self, ctx) -> any:
 
         # Grab git information
@@ -32,7 +30,7 @@ class Version(commands.Cog):
         )
         embed.add_field(name = "Last commit", value = f"```\n\"{last_commit}\"\n(by {last_author})\n```", inline = False)
         embed.add_field(name = "Last modified", value = f"```\n{last_modify}\n{filesmodify} file(s) changed.\n```", inline = False)
-        return await ctx.send(embed = embed)
+        return await ctx.respond(embed = embed)
 
 # Link
 def setup(bot) -> None:

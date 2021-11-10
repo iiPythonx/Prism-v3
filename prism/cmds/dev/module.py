@@ -7,6 +7,7 @@ import ast
 import asyncio
 import traceback
 from discord.ext import commands
+from discord.commands import Option
 
 # Command class
 class Module(commands.Cog):
@@ -37,19 +38,12 @@ class Module(commands.Cog):
         except Exception as Error:
             return f"[failed to unload module '{module}']\n'{Error}'\n{''.join(_ for _ in traceback.StackSummary.from_list(traceback.extract_tb(Error.__traceback__)).format())}"
 
-    @commands.command(pass_context = True)
+    @commands.slash_command(description = "Handle Prism command modules.")
     @commands.is_owner()
-    async def module(self, ctx, action: str = None, module: str = None) -> any:
-        if action is None:
-            return await ctx.send(embed = self.core.error("No module action provided."))
-
-        elif module is None:
-            return await ctx.send(embed = self.core.error(f"No module specified to {action}."))
-
-        # Handle no module
+    async def module(self, ctx, action: Option(str, "The action to perform", choices = ["reload", "load", "unload"]), module: Option(str, "The module path")) -> any:  # noqa
         module = self.core.locate_module(module)
         if module is None:
-            return await ctx.send(embed = self.core.error("Failed to locate specified module."))
+            return await ctx.respond(embed = self.core.error("Failed to locate specified module."))
 
         # Handle action
         tid = self.core.timer.start()
@@ -62,7 +56,7 @@ class Module(commands.Cog):
         embed = self.core.embed(description = f"```py\n{result}\n```")
         embed.set_author(name = "Module Handler", icon_url = self.bot.user.avatar.url)
         embed.set_footer(text = f"Completed in {self.core.timer.end(tid)} second(s).")
-        return await ctx.send(embed = embed)
+        return await ctx.respond(embed = embed)
 
     # Autoreload handler
     async def autoreload(self):

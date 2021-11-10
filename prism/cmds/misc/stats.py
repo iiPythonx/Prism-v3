@@ -13,12 +13,11 @@ class Stats(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "stats", "desc": "Loads and displays the bots system info.", "cat": "misc", "usage": "misc"}
 
     def _format_sectors(self, lines: list) -> str:
         return "".join("> " + line + "\n" for line in lines)[:-1]
 
-    @commands.command(pass_context = True)
+    @commands.slash_command(description = "Show Prism's system information.", category = "misc")
     async def stats(self, ctx) -> any:
 
         # Initialization
@@ -54,7 +53,7 @@ class Stats(commands.Cog):
         if "--debug" in sys.argv:
             embed.description = "WARNING: Debug mode is currently active."
 
-        return await ctx.send(embed = embed)
+        return await ctx.respond(embed = embed)
 
 # Link
 def setup(bot) -> None:

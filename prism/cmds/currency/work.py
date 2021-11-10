@@ -55,7 +55,7 @@ class WorkButtons(discord.ui.View):
 
         db = self.bot.db.load_db("users")
         if not db.test_for(("userid", self.ctx.author.id)):
-            return await self.ctx.send(embed = self.core.noacc(self.ctx, self.ctx.author))
+            return await self.ctx.respond(embed = self.core.noacc(self.ctx, self.ctx.author))
 
         bal = db.get(("userid", self.ctx.author.id), "balance")
         try:
@@ -82,7 +82,6 @@ class Work(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "work", "desc": "Allows you to work for money.", "cat": "currency", "usage": "work"}
 
     def generate_problem(self) -> list:
         nums = []
@@ -107,16 +106,16 @@ class Work(commands.Cog):
         # Return problem data
         return [f"{n1} {operator} {n2}", incorrects + [correct], correct]
 
-    @commands.command(pass_context = True)
+    @commands.slash_command(description = "Allows you to work for money.", category = "currency")
     async def work(self, ctx) -> any:
         if self.bot.cooldowns.on_cooldown("work", ctx.author):
-            return await ctx.send(embed = self.bot.cooldowns.cooldown_text("work", ctx.author))
+            return await ctx.respond(embed = self.bot.cooldowns.cooldown_text("work", ctx.author))
 
         problem = self.generate_problem()
 
         # Create embed
         embed = self.core.embed(title = f"What is {problem[0]}?", description = "You have 5 seconds to answer.")
-        return await ctx.send(
+        return await ctx.respond(
             embed = embed,
             view = WorkButtons(ctx, problem)
         )
