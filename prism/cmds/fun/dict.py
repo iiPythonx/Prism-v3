@@ -6,13 +6,13 @@ import requests
 import urllib.parse
 from typing import Union
 from discord.ext import commands
+from discord.commands import Option
 
 # Command class
 class UrbanDictionary(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "dict", "desc": "Searches Urban Dictionary for a phrase.", "cat": "fun", "usage": "dict <phrase>"}
 
         self.url = "https://api.urbandictionary.com/v0/define?term={}"
 
@@ -31,25 +31,22 @@ class UrbanDictionary(commands.Cog):
         except Exception:
             raise ConnectionError
 
-    @commands.command(pass_context = True, aliases = ["urban", "ud"])
+    @commands.slash_command(description = "Searches Urban Dictionary for a phrase.", category = "fun")
     @commands.is_nsfw()
-    async def dict(self, ctx, *, phrase: str = None) -> any:
-        if phrase is None or (phrase and not phrase.strip()):
-            return await ctx.send(embed = self.core.error("No phrase specified."))
-
+    async def dict(self, ctx, phrase: Option(str, "The phrase to lookup")) -> any:
         try:
             data = self.search(phrase)
             if data is None:
-                return await ctx.send(embed = self.core.error("No results found."))
+                return await ctx.respond(embed = self.core.error("No results found."))
 
             try:
-                return await ctx.send(embed = self.core.embed(title = data["word"], description = data["definition"], url = data["permalink"], footer = ctx))
+                return await ctx.respond(embed = self.core.embed(title = data["word"], description = data["definition"], url = data["permalink"], footer = ctx))
 
             except discord.HTTPException:
-                return await ctx.send(embed = self.core.error("The definition is too long to send."))
+                return await ctx.respond(embed = self.core.error("The definition is too long to send."))
 
         except ConnectionError:
-            return await ctx.send(embed = self.core.error("Failed to connect to Urban Dictionary.\nTry again later."))
+            return await ctx.respond(embed = self.core.error("Failed to connect to Urban Dictionary.\nTry again later."))
 
 # Link
 def setup(bot) -> None:

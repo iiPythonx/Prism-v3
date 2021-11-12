@@ -9,7 +9,6 @@ class NHIE(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "neverhaveiever", "desc": "Gives you a random 'never have i ever' question.", "cat": "fun", "usage": "neverhaveiever"}
 
         self.responses = [
             "walked a dog", "went to a bar", "made some ascii text",
@@ -22,9 +21,9 @@ class NHIE(commands.Cog):
             "woken someone up by snoring", "given someone a black eye"
         ]
 
-    @commands.command(pass_context = True, aliases = ["nhie"])
-    async def neverhaveiever(self, ctx,) -> any:
-        return await ctx.send(embed = self.core.small_embed("Never have I ever " + random.choice(self.responses) + "."))
+    @commands.slash_command(description = "Gives you a random 'never have i ever' question.", category = "fun")
+    async def neverhaveiever(self, ctx) -> any:
+        return await ctx.respond(embed = self.core.small_embed("Never have I ever " + random.choice(self.responses) + "."))
 
 # Link
 def setup(bot) -> None:

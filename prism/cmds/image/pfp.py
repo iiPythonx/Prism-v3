@@ -1,20 +1,19 @@
 # Copyright 2021 iiPython
 
 # Modules
+import discord
 from discord.ext import commands
+from discord.commands import Option
 
 # Command class
 class Avatar(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "avatar", "desc": "Shows you somebodies profile picture.", "cat": "image", "usage": "avatar [user]"}
 
-    @commands.command(pass_context = True, aliases = ["pfp", "av"])
-    async def avatar(self, ctx, user = None) -> any:
-        user = self.core.get_user(ctx, user or ctx.author)
-        if user is None:
-            return await ctx.send(embed = self.core.nouser())
+    @commands.slash_command(description = "Shows you somebodies profile picture.", category = "image")
+    async def avatar(self, ctx, user: Option(discord.Member, "The user with the profile picture", reuqired = False)) -> any:
+        user = user or ctx.author
 
         # Construct embed
         embed = self.core.embed(
@@ -23,7 +22,7 @@ class Avatar(commands.Cog):
             footer = ctx
         )
         embed.set_image(url = user.avatar.url)
-        return await ctx.send(embed = embed)
+        return await ctx.respond(embed = embed)
 
 # Link
 def setup(bot) -> None:

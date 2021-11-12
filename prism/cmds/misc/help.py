@@ -3,24 +3,23 @@
 # Modules
 from prism.config import config
 from discord.ext import commands
+from discord.commands import Option
 
 # Command class
 class Help(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "help", "desc": "The help command, allowing you to get basic information.", "cat": "misc", "usage": "help [command/alias/category]"}
 
         self._cat_long_map = {"misc": "Miscellaneous", "fun": "Entertainment", "currency": "Economy", "image": "Images"}
 
     def _fetch_attrs(self) -> list:
         attrs = []
-        for command in self.bot.commands:
+        for cmd_id, command in self.bot.application_commands.items():
             if hasattr(command.cog, "hidden") and command.cog.hidden:
                 continue
 
-            attr = command.cog.attr
-            attr["aliases"] = command.aliases
+            attr = {"name": command.name, "desc": command.description, "cat": command.category}
             attrs.append(attr)
 
         return attrs
@@ -41,10 +40,8 @@ class Help(commands.Cog):
 
         return cmds
 
-    @commands.command(pass_context = True, aliases = ["info"])
-    async def help(self, ctx, query: str = None) -> any:
-
-        # Construct embed
+    @commands.slash_command(description = "The Prism help command.", category = "misc")
+    async def help(self, ctx, query: Option(str, "The query to search for", required = False) = None) -> any:
         embed = self.core.embed(footer = ctx)
         embed.set_thumbnail(url = self.bot.user.avatar.url)
 
@@ -56,7 +53,7 @@ class Help(commands.Cog):
         if query is None:
             embed.title = "Prism v3"
             embed.add_field(name = "Categories", value = f"> {self.core.format_list(categories)}", inline = False)
-            embed.add_field(name = "Commands", value = f"> {ctx.prefix}help [category]", inline = False)
+            embed.add_field(name = "Commands", value = "> /help [category]", inline = False)
             embed.add_field(
                 name = "Credits",
                 value = f"> {self.core.format_list([self.bot.owner.split('#')[0]] + config.get(['admins', 'friends']))}",
@@ -64,8 +61,6 @@ class Help(commands.Cog):
             )
 
         else:
-
-            # Check query
             query = query.lower()
 
             # Check categories
@@ -77,24 +72,18 @@ class Help(commands.Cog):
 
             # Check commands
             for attr in attrs:
-                if attr["name"] == query or query in attr["aliases"]:
-                    if query in attr["aliases"]:
-                        query = attr["name"]
+                if attr["name"] == query:
 
                     # Create embed
                     embed.title = f"Command Info - {query}"
                     embed.add_field(name = "Description", value = f"> {attr['desc']}", inline = False)
                     embed.add_field(name = "Category", value = f"> {self._cat_long_map[attr['cat']]} ({attr['cat']})", inline = False)
-                    if attr["aliases"]:
-                        embed.add_field(name = "Aliases", value = f"> {self.core.format_list(attr['aliases'])}", inline = False)
-
-                    embed.add_field(name = "Usage", value = f"> {attr['usage']}", inline = False)
 
             # Error handle
             if not embed.title:
-                return await ctx.send(embed = self.core.error("No results found."))
+                return await ctx.respond(embed = self.core.error("No results found."))
 
-        return await ctx.send(embed = embed)
+        return await ctx.respond(embed = embed)
 
 # Link
 def setup(bot) -> None:

@@ -1,4 +1,6 @@
+praw
 rich
+psutil
 pillow
 pyfiglet
 iipythonpy

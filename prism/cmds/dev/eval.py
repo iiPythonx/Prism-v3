@@ -4,7 +4,7 @@
 import ast
 import discord
 from discord.ext import commands
-from discord.utils import time_snowflake
+from discord.commands import Option
 
 # Command class
 class Eval(commands.Cog):
@@ -34,19 +34,9 @@ class Eval(commands.Cog):
         embed.set_footer(text = f"Completed in {self.core.timer.end(timer_tid)} second(s).")
         return embed
 
-    @commands.command(name = "eval", pass_context = True)
+    @commands.slash_command(name = "eval", description = "Evaluate Python code.")
     @commands.is_owner()
-    async def _eval(self, ctx, *, cmd: str = None) -> any:
-        if not cmd:
-            return await ctx.send(embed = self.core.error("No code provided."))
-
-        # Remove tags
-        if cmd[3:].startswith("py") or cmd[3:].startswith("python"):
-            cmd = cmd[5:]
-            if cmd.startswith("thon"):
-                cmd = cmd[4:]
-
-        # Setup environment
+    async def _eval(self, ctx, *, cmd: Option(str, "The code to evaluate.")) -> any:
         env = {
             "ctx": ctx,
             "bot": self.bot,
@@ -71,17 +61,17 @@ class Eval(commands.Cog):
             result = (await eval(f"{fn_name}()", env))
 
             try:
-                return await ctx.send(embed = self._eval_(result, start))
+                return await ctx.respond(embed = self._eval_(result, start))
 
             except discord.HTTPException:
-                return await ctx.send(embed = self.core.error("Output is too large to send."))
+                return await ctx.respond(embed = self.core.error("Output is too large to send."))
 
         except Exception as e:
             try:
-                return await ctx.send(embed = self._eval_(e, start))
+                return await ctx.respond(embed = self._eval_(e, start))
 
             except discord.HTTPException:
-                return await ctx.send(embed = self.core.error("Output is too large to send."))
+                return await ctx.respond(embed = self.core.error("Output is too large to send."))
 
 # Link
 def setup(bot) -> None:

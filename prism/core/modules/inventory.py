@@ -12,7 +12,7 @@ class Inventory(object):
         self.owner_id = owner_id
         self.items = self._load_inv()
 
-    def _load_inv(self) -> list:
+    def _load_inv(self) -> dict:
         data = db.getall(("userid", self.owner_id))
         if data is None:
             return {}
@@ -32,4 +32,12 @@ class Inventory(object):
             self.items[name] = amount
             db.create((self.owner_id, name, amount))
 
+        db.save()
+
+    def remove_item(self, name: str, amount: int = 1) -> None:
+        if name not in self.items:
+            return
+
+        self.items[name] -= amount
+        db.update({"amount": self.items[name]}, [("userid", self.owner_id), ("name", name)])
         db.save()
