@@ -1,26 +1,25 @@
 # Copyright 2021 iiPython
 
 # Modules
+import discord
 from discord.ext import commands
+from discord.commands import Option
 
 # Command class
 class Profile(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "profile", "desc": "Shows somebodies profile.", "cat": "misc", "usage": "profile [user]"}
 
-    @commands.command(pass_context = True)
-    async def profile(self, ctx, user = None) -> any:
-        user = self.core.get_user(ctx, user or ctx.author)
-        if user is None:
-            return await ctx.send(embed = self.core.nouser())
+    @commands.slash_command(description = "View somebodies profile.", category = "misc")
+    async def profile(self, ctx, user: Option(discord.Member, "The user to view", required = False) = None) -> any:
+        user = user or ctx.author
 
         # Load database
         db = self.bot.db.load_db("users")
         info = db.get(("userid", user.id))
-        if info == -1:
-            return await ctx.send(embed = self.core.noacc(ctx, user))
+        if info is None:
+            return await ctx.respond(embed = self.core.noacc(ctx, user))
 
         # Construct embed
         embed = self.core.embed(
@@ -31,7 +30,7 @@ class Profile(commands.Cog):
         )
         embed.add_field(name = "Balance", value = f"{self.core.format_coins(info['balance'])} coin(s)", inline = False)
         embed.set_thumbnail(url = user.avatar.url)
-        return await ctx.send(embed = embed)
+        return await ctx.respond(embed = embed)
 
 # Link
 def setup(bot) -> None:

@@ -19,14 +19,11 @@ class Invite(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "invite", "desc": "Allows you to invite the bot.", "cat": "misc", "usage": "invite"}
 
-        self.perms = 2147609664
-
-    @commands.command(pass_context = True)
+    @commands.slash_command(description = "Invite Prism to your server.", category = "misc")
     async def invite(self, ctx) -> any:
-        url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions={self.perms}&scope=bot"
-        return await ctx.send(embed = self.core.small_embed("Invite Prism to your server."), view = InviteButton(url))
+        url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=2147609664&scope=applications.commands%20bot"
+        return await ctx.respond(embed = self.core.small_embed("Invite Prism to your server."), view = InviteButton(url))
 
 # Link
 def setup(bot) -> None:

@@ -11,18 +11,17 @@ class Guess(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.core = bot.core
-        self.attr = {"name": "guess", "desc": "Earn coins for guessing the right number.", "cat": "fun", "usage": "guess"}
 
         self._cooldown_time = (60 * 60) * 5
 
-    @commands.command(pass_context = True)
+    @commands.slash_command(description = "Earn coins for guessing the right number.", category = "fun")
     async def guess(self, ctx) -> any:
         if self.bot.cooldowns.on_cooldown("guess", ctx.author):
-            return await ctx.send(embed = self.bot.cooldowns.cooldown_text("guess", ctx.author))
+            return await ctx.respond(embed = self.bot.cooldowns.cooldown_text("guess", ctx.author))
 
         db = self.bot.db.load_db("users")
         if not db.test_for(("userid", ctx.author.id)):
-            return await ctx.send(embed = self.core.noacc(ctx, ctx.author))
+            return await ctx.respond(embed = self.core.noacc(ctx, ctx.author))
 
         # Initialization
         max_num = random.randint(7, 13)
@@ -40,10 +39,10 @@ class Guess(commands.Cog):
         # Send embed
         embed = self.core.embed(
             title = "Think you can guess it?",
-            description = f"I'm thinking of a number between 1 and {max_num}.\nIf you guess it, I'll give you `{coins}` coins. You have 5 seconds.\n\nTo guess, simply type the number in chat.",
+            description = f"I'm thinking of a number between 1 and {max_num}.\nIf you guess it, I'll give you {self.core.format_coins(coins)} coins. You have 5 seconds.\n\nTo guess, simply type the number in chat.",
             footer = ctx
         )
-        msg = await ctx.send(embed = embed)
+        msg = await ctx.respond(embed = embed)
 
         # Wait for number
         try:
@@ -51,20 +50,20 @@ class Guess(commands.Cog):
             try:
                 if m is None:
                     self.bot.cooldowns.add_cooldown("guess", ctx.author, self._cooldown_time)
-                    return await ctx.send(embed = self.core.error("That doesn't look like a number."))
+                    return await ctx.respond(embed = self.core.error("That doesn't look like a number."))
 
                 m = int(m)
                 if m != number:
                     self.bot.cooldowns.add_cooldown("guess", ctx.author, self._cooldown_time)
-                    return await ctx.send(embed = self.core.error(f"Sorry, I was thinking of `{number}`."))
+                    return await ctx.respond(embed = self.core.error(f"Sorry, I was thinking of `{number}`."))
 
             except ValueError:
                 self.bot.cooldowns.add_cooldown("guess", ctx.author, self._cooldown_time)
-                return await ctx.send(embed = self.core.error("Woops, that isn't a number."))
+                return await ctx.respond(embed = self.core.error("Woops, that isn't a number."))
 
         except asyncio.exceptions.TimeoutError:
             self.bot.cooldowns.add_cooldown("guess", ctx.author, self._cooldown_time)
-            return await ctx.send(embed = self.core.error("You didn't guess in time!"))
+            return await ctx.respond(embed = self.core.error("You didn't guess in time!"))
 
         # Update balance
         db.update({"balance": bal + coins}, ("userid", ctx.author.id))
