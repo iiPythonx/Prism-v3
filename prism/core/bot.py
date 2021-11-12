@@ -103,7 +103,7 @@ class PrismBot(commands.Bot):
         error_code = secrets.token_hex(8)
         self.log("error", f"{error_code} | {ctx.command} | {type(error).__name__}: {error}")
 
-        return await ctx.respond(
+        return await ctx.send(
             embed = self.core.error(
                 f"An unexpected error has occured, please report this to {self.owner}.\nError code: `{error_code}`",
                 syserror = True

@@ -47,7 +47,7 @@ class Utils(object):
         embed = discord.Embed(**kwargs)
         if footer is not None:
             author = footer.author
-            embed.set_footer(icon_url = author.avatar.url, text = f"| Requested by {author}.")
+            embed.set_footer(icon_url = author.avatar.url, text = f"Requested by {author}.")
 
         return embed
 
@@ -76,7 +76,7 @@ class Utils(object):
                     return modpath
 
     def format_coins(self, amount: int) -> str:
-        return "{:20,}".format(amount).strip()
+        return "{:20,}".format(round(amount)).strip()
 
     def format_list(self, list_to_format: list) -> str:
         return ", ".join(list_to_format)
