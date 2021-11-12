@@ -33,3 +33,11 @@ class Inventory(object):
             db.create((self.owner_id, name, amount))
 
         db.save()
+
+    def remove_item(self, name: str, amount: int = 1) -> None:
+        if name not in self.items:
+            return
+
+        self.items[name] -= amount
+        db.update({"amount": self.items[name]}, [("userid", self.owner_id), ("name", name)])
+        db.save()
