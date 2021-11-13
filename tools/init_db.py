@@ -16,13 +16,14 @@ if not os.path.isdir(db_dir):
     os.mkdir(db_dir)
 
 # Create the databases
-def create_db(name):
+def create_db(name: str, cmd: str) -> None:
     conn = sqlite3.connect(os.path.abspath(os.path.join(db_dir, name + ".db")))
     cursor = conn.cursor()
-    return conn, cursor
+    cursor.execute(cmd)
+    conn.commit()
+    conn.close()
 
-c, cs = create_db("users")
-cs.execute("""
+create_db("users", """
 CREATE TABLE IF NOT EXISTS users (
     userid integer,
     balance long,
@@ -30,29 +31,25 @@ CREATE TABLE IF NOT EXISTS users (
     accent text
 )
 """)
-c.commit()
-c.close()
-
-c, cs = create_db("inventory")
-cs.execute("""
+create_db("inventory", """
 CREATE TABLE IF NOT EXISTS inventory (
     userid integer,
     name text,
     amount integer
 )
 """)
-c.commit()
-c.close()
-
-c, cs = create_db("guilds")
-cs.execute("""
+create_db("guilds", """
 CREATE TABLE IF NOT EXISTS guilds (
     id integer,
     prefix text
 )
 """)
-c.commit()
-c.close()
+create_db("bank", """
+CREATE TABLE IF NOT EXISTS bank (
+    userid integer,
+    balance long
+)
+""")
 
 # Finish process
 print("  [green]databases initialized.")

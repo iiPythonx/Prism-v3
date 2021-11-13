@@ -4,6 +4,7 @@
 import discord
 from discord.ext import commands
 from discord.commands import Option
+from prism.core.banks import get_bank_balance
 
 # Command class
 class Balance(commands.Cog):
@@ -21,10 +22,12 @@ class Balance(commands.Cog):
             return await ctx.respond(embed = self.core.noacc(ctx, user))
 
         bal = db.get(("userid", user.id), "balance")
+        bank_bal = get_bank_balance(user.id)
 
         # Handle embed
-        embed = self.core.small_embed(f"{'You have' if user == ctx.author else f'{user.nick if user.nick is not None else user.name} has'} {self.core.format_coins(bal)} coin(s).", footer = ctx)
-        embed.set_author(name = "Balance")
+        embed = self.core.embed(title = str(user), footer = ctx)
+        embed.add_field(name = "Balance", value = f"{self.core.format_coins(bal)} coin(s)", inline = False)
+        embed.add_field(name = "Bank Balance", value = f"{self.core.format_coins(bank_bal)} coin(s)", inline = False)
         return await ctx.respond(embed = embed)
 
 # Link

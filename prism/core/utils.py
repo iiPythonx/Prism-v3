@@ -102,6 +102,32 @@ class Utils(object):
 
         return result.rstrip("\n")
 
+    def amountstr_to_bal(self, amount: str, balance: int) -> int:
+        funcs = {
+            "all": lambda b: b,
+            "max": lambda b: b,
+            "half": lambda b: round(b / 2)
+        }
+        amount = amount.lower()
+        if amount in funcs:
+            return funcs[amount](balance)
+
+        elif amount.endswith("%"):
+            if len(amount) > 4 or len(amount) < 2:
+                raise ValueError("Invalid percent specified.")
+
+            try:
+                percent = int(amount[:-1])
+                if percent > 100 or percent < 1:
+                    raise ValueError("Percent cannot be larger than 100% or under 1%")
+
+                return int(balance / (100 / percent))
+
+            except ValueError:
+                raise ValueError("Invalid percent specified.")
+
+        raise ValueError("Invalid amount specified.")
+
     async def get_message(self, ctx, timeout: int = 5) -> str:
         def check(message):
             return message.author.id == ctx.author.id and message.channel.id == ctx.channel.id
