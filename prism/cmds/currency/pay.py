@@ -25,26 +25,14 @@ class Pay(commands.Cog):
 
         # Check amount
         try:
-            # Check for a percent
-            if amount.endswith("%"):
-                if len(amount) > 4 or len(amount) < 2:
-                    return await ctx.respond(embed = self.core.error("Invalid percent specified."))
-
-                try:
-                    percent = int(amount[:-1])
-                    if percent > 100 or percent < 1:
-                        return await ctx.respond(embed = self.core.error("Percent cannot be larger than 100% or under 1%"))
-
-                    amount = int(bal / (100 / percent))
-
-                except ValueError:
-                    return await ctx.respond(embed = self.core.error("Invalid percent specified."))
-
-            else:
-                amount = int(amount)
+            amount = int(amount)
 
         except ValueError:
-            return await ctx.respond(embed = self.core.error("Invalid amount specified."))
+            try:
+                amount = self.core.amountstr_to_bal(amount, bal)
+
+            except ValueError:
+                return await ctx.respond(embed = self.core.error("Invalid amount specified."))
 
         if amount < 1:
             return await ctx.respond(embed = self.core.error("You need to pay at least 1 coin."))
