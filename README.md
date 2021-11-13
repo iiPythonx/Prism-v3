@@ -4,7 +4,7 @@
 ![](https://img.shields.io/github/commit-activity/m/ii-Python/Prism-v3) ![](https://img.shields.io/github/languages/code-size/ii-Python/Prism-v3) ![](https://img.shields.io/tokei/lines/github/ii-Python/Prism-v3)
 
 Welcome to the Prism v3 repository, hosting the code for Prism v3.  
-Prism is a self-hosted bot, but it has a public instance hosted by me.
+Prism is a self-hosted bot, but it also has a public instance hosted by me ([invite](https://discord.com/api/oauth2/authorize?client_id=862456523209179147&permissions=2147609664&scope=applications.commands%20bot)).
 
 ---
 
@@ -14,7 +14,7 @@ Before you start the setup process, you need to install the needed requirements.
 Please note these commands may change depending on your environment.
 
 You require the following (before being able to continue at all):
-- Python 3.8+ (**3.9+ recommended**); download it from [python.org](https://python.org)
+- Python 3.9+ (**latest is recommended**); download it from [python.org](https://python.org)
 - Git; download it from [git-scm.com](https://git-scm.com)
 
 The following script should setup the base repository:
@@ -68,9 +68,11 @@ The following are required:
 The rest of the options are up to you to tweak on your own accord.  
 Launching the bot is as simple as running `python3 launch.py`
 
+For more configuration, please consult the [wiki](https://github.com/ii-Python/Prism-v3/wiki).
+
 ---
 To enable debug mode (which features an autoreload feature), pass `--debug` to `launch.py`.  
-**Please note, enabling debug mode can drastically increase memory usage when lots of commands are loaded.**
+**Please note, enabling debug mode will increase memory usage when lots of commands are loaded.**
 
 ### 👥 Credits
 
