@@ -3,17 +3,15 @@
 
 # Modules
 import os
-import asyncio
 import secrets
 import discord
-import iipython as ip
-
-from .utils import Utils
 from typing import Union
-from ..logging import logger
-from ..database import Database
 from prism.config import config
 from discord.ext import commands
+
+from .utils import Utils
+from ..logging import logger
+from ..database import Database
 
 # Bot class
 class PrismBot(commands.Bot):
@@ -101,7 +99,7 @@ class PrismBot(commands.Bot):
             return await ctx.send(embed = self.core.error(error_map[type(error)](str(error))))
 
         error_code = secrets.token_hex(8)
-        self.log("error", f"{error_code} | {ctx.command} | {type(error).__name__}: {error}")
+        self.log("error", f"{error_code} | {ctx.command.name} | {':'.join(str(error).split(':')[1:]).lstrip(' ')}")
 
         return await ctx.send(
             embed = self.core.error(

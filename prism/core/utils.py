@@ -7,8 +7,6 @@ import subprocess
 from shutil import which
 from typing import Union
 from discord.ext import commands
-from discord.ext.commands.context import Context
-from Levenshtein.StringMatcher import StringMatcher
 
 from .modules.timer import timer
 from .modules.images import images
@@ -20,10 +18,7 @@ class Utils(object):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         self.emojis = {"checkmark": ":white_check_mark:"}
-        self.storage = {
-            "sm": StringMatcher(),
-            "accent": "#EB8F6B"
-        }
+        self.storage = {"accent": "#EB8F6B"}
 
         self.asset_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../assets"))
 

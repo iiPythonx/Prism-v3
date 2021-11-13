@@ -2,61 +2,23 @@
 
 # Modules
 import discord
-import iipython as ip
 from discord.ext import commands
 from discord.commands import Option
+from prism.core.models import Paginator
 
 # Shop pageinator class
-class ShopPagination(discord.ui.View):
-    def __init__(self, ctx, pages: list, page: int) -> None:
-        super().__init__()
-        self.ctx = ctx
-
-        # Correct page number
-        if page > len(pages):
-            raise ValueError
-
-        elif page < 1:
-            raise ValueError
-
-        self.pages = pages
-        self.current_page = page - 1
-
-        # Create buttons
-        self.btns = {}
-        for i in ["Previous", "Next"]:
-            btn = discord.ui.Button(label = i)
-            btn.callback = self.callback
-            self.btns[btn.custom_id] = i
-            self.add_item(btn)
-
+class ShopPagination(Paginator):
     def create_page(self, page: int) -> discord.Embed:
-        embed = self.ctx.bot.core.embed(title = "Prism Shop")
+        embed = self.core.embed(title = "Prism Shop")
         for item in self.pages[page]:
             embed.add_field(
-                name = f":{item['emoji']}:  **{item['name']}** — __{self.ctx.bot.core.format_coins(item['price'])} coins__",
+                name = f":{item['emoji']}:  **{item['name']}** — __{self.core.format_coins(item['price'])} coins__",
                 value = item["body"],
                 inline = False
             )
 
         embed.set_footer(text = f"Prism Shop | Page {page + 1} of {len(self.pages)}")
         return embed
-
-    async def load_page(self, inter: discord.Interaction, page: int) -> None:
-        return await inter.message.edit(embed = self.create_page(page))
-
-    async def callback(self, inter: discord.Interaction) -> None:
-        if inter.user != self.ctx.author:
-            return
-
-        button = self.btns[inter.data["custom_id"]]
-        if button == "Previous" and self.current_page > 0:
-            self.current_page -= 1
-            return await self.load_page(inter, self.current_page)
-
-        elif button == "Next" and self.current_page < (len(self.pages) - 1):
-            self.current_page += 1
-            return await self.load_page(inter, self.current_page)
 
 # Command class
 class Shop(commands.Cog):
