@@ -71,16 +71,11 @@ class PrismBot(commands.Bot):
         self.core.storage["cmd_path"] = cmd_path
 
         # Load commands
-        for path, _, files in os.walk(cmd_path):
-            for file in files:
-                if not file.endswith(".py"):
-                    continue  # Ignore __pycache__ and etc
+        for cog in os.listdir(cmd_path):
+            if cog.startswith("__"):
+                continue
 
-                cmd_path = os.path.join(path, file)
-                relpath = cmd_path.replace("\\", "/").replace(os.getcwd().replace("\\", "/"), "").lstrip("/")  # Convert to unix-like path
-                modpath = relpath[:-3].replace("/", ".")  # Convert to Python dot-path
-
-                self.load_extension(modpath)
+            self.load_extension(f"prism.cmds.{cog}")
 
         self.log("success", "Loaded commands in {} second(s).".format(self.core.timer.end(tid)))
 
