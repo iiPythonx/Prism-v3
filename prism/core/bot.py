@@ -3,11 +3,12 @@
 
 # Modules
 import os
+import random
 import secrets
 import discord
 from typing import Union
 from prism.config import config
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 from .utils import Utils
 from ..logging import logger
@@ -86,6 +87,13 @@ class PrismBot(commands.Bot):
 
     # Main events
     async def on_ready(self) -> None:
+
+        # Start status
+        status_data = config.get("status")
+        if status_data is not None and status_data["enabled"]:
+            self.update_status.start()
+
+        # Log
         self.log("success", "Logged in as {}.".format(str(self.user)))
 
     async def on_application_command_error(self, ctx: commands.Context, error: Exception) -> any:
@@ -105,5 +113,30 @@ class PrismBot(commands.Bot):
             embed = self.core.error(
                 f"An unexpected error has occured, please report this to {self.owner}.\nError code: `{error_code}`",
                 syserror = True
+            )
+        )
+
+    # Status handler
+    @tasks.loop(minutes = 5)
+    async def update_status(self) -> None:
+        status_data = config.get("status")
+
+        # Handle choices
+        status_name = random.choice(["watching", "playing"])
+        status_type = {
+            "watching": discord.ActivityType.watching,
+            "playing": discord.ActivityType.playing
+        }[status_name]
+
+        # Handle updating
+        await self.change_presence(
+            status = {
+                "online": discord.Status.online,
+                "idle": discord.Status.idle,
+                "dnd": discord.Status.dnd,
+            }[status_data.get("status") or "online"],
+            activity = discord.Activity(
+                type = status_type,
+                name = random.choice(status_data.get(status_name))
             )
         )
