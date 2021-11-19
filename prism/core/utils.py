@@ -13,6 +13,14 @@ from .modules.images import images
 from .modules.cooldowns import Cooldowns
 from .modules.inventory import Inventory
 
+# Data directory
+class PrismDataDirectory(object):
+    def __init__(self, dir_: str) -> None:
+        self.dir = dir_
+
+    def path(self, path: str) -> str:
+        return os.path.join(self.dir, path)
+
 # Utility class
 class Utils(object):
     def __init__(self, bot: commands.Bot) -> None:
@@ -127,6 +135,10 @@ class Utils(object):
                 raise ValueError("Invalid percent specified.")
 
         raise ValueError("Invalid amount specified.")
+
+    def generate_data_dir(self, fp: str) -> PrismDataDirectory:
+        data_dir = os.path.abspath(os.path.join(os.path.dirname(fp), "data"))
+        return PrismDataDirectory(data_dir)
 
     async def get_message(self, ctx, timeout: int = 5) -> str:
         def check(message):

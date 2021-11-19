@@ -2,7 +2,6 @@
 
 # Modules
 import os
-import sys
 import psutil
 import discord
 from prism import __version__
@@ -48,11 +47,6 @@ class Stats(commands.Cog):
             inline = False
         )
         embed.set_thumbnail(url = self.bot.user.avatar.url)
-
-        # Handle debug mode
-        if "--debug" in sys.argv:
-            embed.description = "WARNING: Debug mode is currently active."
-
         return await ctx.respond(embed = embed)
 
 # Link

@@ -1,0 +1,307 @@
+[
+    {
+        "question": "What's the diameter of a basketball hoop in inches?",
+        "choices": [
+            "18",
+            "22",
+            "17"
+        ],
+        "answer": "18"
+    },
+    {
+        "question": "The Olympics are held every how many years?",
+        "choices": [
+            "6",
+            "4",
+            "10"
+        ],
+        "answer": "4"
+    },
+    {
+        "question": "What sport is best known as the ‘king of sports'?",
+        "choices": [
+            "Basketball",
+            "Football",
+            "Soccer"
+        ],
+        "answer": "Soccer"
+    },
+    {
+        "question": "What do you call it when a bowler makes three strikes in a row?",
+        "choices": [
+            "Pro Gamer Move",
+            "Turkey",
+            "Strike"
+        ],
+        "answer": "Turkey"
+    },
+    {
+        "question": "What's the national sport of Canada?",
+        "choices": [
+            "Lacrosse",
+            "Hockey",
+            "Soccer"
+        ],
+        "answer": "Lacrosse"
+    },
+    {
+        "question": "How many dimples does an average golf ball have?",
+        "choices": [
+            "336",
+            "325",
+            "410"
+        ],
+        "answer": "336"
+    },
+    {
+        "question": "What country has competed the most times in the Summer Olympics yet hasn't won a gold medal?",
+        "choices": [
+            "Philippines",
+            "China",
+            "Russia"
+        ],
+        "answer": "Philippines"
+    },
+    {
+        "question": "The classic 1980 movie called Raging Bull is about which real-life boxer?",
+        "choices": [
+            "Jake LaMotta",
+            "Muhammad Ali",
+            "Mike Tyson"
+        ],
+        "answer": "Jake LaMotta"
+    },
+    {
+        "question": "Who has won more tennis grand slam titles, Venus Williams or Serena Williams?",
+        "choices": [
+            "Serena Williams",
+            "Venus Williams"
+        ],
+        "answer": "Serena Williams"
+    },
+    {
+        "question": "What country has competed the most times in the Summer Olympics yet hasn't won any kind of medal?",
+        "choices": [
+            "Romania",
+            "Liechtenstein",
+            "Canada"
+        ],
+        "answer": "Liechtenstein"
+    },
+    {
+        "question": "Which boxer fought against Muhammad Ali and won?",
+        "choices": [
+            "Joe Frazier",
+            "Floyd Mayweather",
+            "George Foreman"
+        ],
+        "answer": "Joe Frazier"
+    },
+    {
+        "question": "How many medals did China win at the Beijing Olympics?",
+        "choices": [
+            "100",
+            "95",
+            "110"
+        ],
+        "answer": "100"
+    },
+    {
+        "question": "What does NBA stand for?",
+        "choices": [
+            "National Basketball Association",
+            "National Bar Association",
+            "National Book Award"
+        ],
+        "answer": "National Basketball Association"
+    },
+    {
+        "question": "In motor racing, what color is the flag they wave to indicate the winner?",
+        "choices": [
+            "Checkered flag",
+            "Blue flag",
+            "Crossed flag"
+        ],
+        "answer": "Checkered flag"
+    },
+    {
+        "question": "How many holes are played in an average round of golf?",
+        "choices": [
+            "18",
+            "20",
+            "12"
+        ],
+        "answer": "18"
+    },
+    {
+        "question": "What color are the goalposts in football?",
+        "choices": [
+            "Yellow",
+            "Blue",
+            "Red"
+        ],
+        "answer": "Yellow"
+    },
+    {
+        "question": "How long is a marathon in miles?",
+        "choices": [
+            "26.2",
+            "24.6",
+            "28.4"
+        ],
+        "answer": "26.2"
+    },
+    {
+        "question": "In what game is 'love' a score?",
+        "choices": [
+            "Tennis",
+            "Soccer",
+            "Lacrosse"
+        ],
+        "answer": "Tennis"
+    },
+    {
+        "question": "What sport is a lot like softball?",
+        "choices": [
+            "Baseball",
+            "Volleyball",
+            "Tennis"
+        ],
+        "answer": "Baseball"
+    },
+    {
+        "question": "In meters, how big is an Olympic-sized swimming pool?",
+        "choices": [
+            "50x25",
+            "45x30",
+            "60x25"
+        ],
+        "answer": "50x25"
+    },
+    {
+        "question": "In football, how many points does a touchdown hold?",
+        "choices": [
+            "6",
+            "8",
+            "10"
+        ],
+        "answer": "6"
+    },
+    {
+        "question": "How many players are on a baseball team?",
+        "choices": [
+            "9",
+            "10",
+            "5"
+        ],
+        "answer": "9"
+    },
+    {
+        "question": "In soccer, what body part can't touch the ball?",
+        "choices": [
+            "Hands",
+            "Chest",
+            "Head"
+        ],
+        "answer": "Hands"
+    },
+    {
+        "question": "What sporting equipment is used for striking a tennis ball?",
+        "choices": [
+            "Tennis racquet",
+            "Tennis mitten",
+            "Smack Machine"
+        ],
+        "answer": "Tennis racquet"
+    },
+    {
+        "question": "Which sport uses a net, a racket, and a shuttlecock?",
+        "choices": [
+            "Badminton",
+            "Tennis",
+            "Lacrosse"
+        ],
+        "answer": "Badminton"
+    },
+    {
+        "question": "Which of the following sports does not use a ball?",
+        "choices": [
+            "Hockey",
+            "Golf",
+            "Polo"
+        ],
+        "answer": "Hockey"
+    },
+    {
+        "question": "What type of race is the Tour de France?",
+        "choices": [
+            "Bicycle",
+            "Motorbike",
+            "Marathon"
+        ],
+        "answer": "Bicycle"
+    },
+    {
+        "question": "How many sports were included in the 2008 Summer Olympics?",
+        "choices": [
+            "28",
+            "20",
+            "32"
+        ],
+        "answer": "28"
+    },
+    {
+        "question": "A sporting event is held every year on Memorial Day. What is it?",
+        "choices": [
+            "Indianapolis 500",
+            "Tour de France",
+            "NASCAR"
+        ],
+        "answer": "Indianapolis 500"
+    },
+    {
+        "question": "What number sets to the right of the number '20' on a standard dartboard?",
+        "choices": [
+            "1",
+            "4",
+            "7"
+        ],
+        "answer": "1"
+    },
+    {
+        "question": "What is the only sport to be played on the moon?",
+        "choices": [
+            "Golf",
+            "Soccer",
+            "Lacrosse"
+        ],
+        "answer": "Golf"
+    },
+    {
+        "question": "How old was Tiger Woods when he won the Masters?",
+        "choices": [
+            "21",
+            "24",
+            "27"
+        ],
+        "answer": "21"
+    },
+    {
+        "question": "In which sport are the terms 'stale fish' and 'mule kick' used?",
+        "choices": [
+            "Snowboarding",
+            "Skateboarding",
+            "Baseball"
+        ],
+        "answer": "Snowboarding"
+    },
+    {
+        "question": "How many Olympic games were held in countries that no longer exist?",
+        "choices": [
+            "3",
+            "5",
+            "1"
+        ],
+        "answer": "3"
+    }
+]
