@@ -15,7 +15,7 @@ class Banks(commands.Cog):
         self.bot = bot
         self.core = bot.core
 
-    @commands.slash_command(description = "Shows your bank status", category = "currency")
+    @commands.slash_command(description = "Shows your bank status")
     async def bank(self, ctx, user: Option(discord.Member, "The user to view the bank of", required = False) = None) -> any:
         user = user or ctx.author
 

@@ -9,7 +9,7 @@ class Ping(commands.Cog):
         self.bot = bot
         self.core = bot.core
 
-    @commands.slash_command(description = "Check the ping times", category = "misc")
+    @commands.slash_command(description = "Check the ping times")
     async def ping(self, ctx) -> any:
 
         # Test API ping

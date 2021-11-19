@@ -11,7 +11,7 @@ class Version(commands.Cog):
         self.core = bot.core
         self.github_repo = "https://github.com/ii-Python/Prism-v3"
 
-    @commands.slash_command(description = "Show Prism's version.", category = "misc")
+    @commands.slash_command(description = "Show Prism's version.")
     async def version(self, ctx) -> any:
 
         # Grab git information

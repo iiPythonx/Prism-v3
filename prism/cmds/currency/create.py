@@ -9,7 +9,7 @@ class Create(commands.Cog):
         self.bot = bot
         self.core = bot.core
 
-    @commands.slash_command(description = "Creates a Prism account.", category = "currency")
+    @commands.slash_command(description = "Creates a Prism account.")
     async def create(self, ctx) -> any:
         db = self.bot.db.load_db("users")
         if db.test_for(("userid", ctx.author.id)):

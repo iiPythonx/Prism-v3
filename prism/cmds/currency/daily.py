@@ -12,7 +12,7 @@ class Daily(commands.Cog):
 
         self._cooldown = 86400
 
-    @commands.slash_command(description = "Get free coins everyday.", category = "currency")
+    @commands.slash_command(description = "Get free coins everyday.")
     async def daily(self, ctx) -> any:
         db = self.bot.db.load_db("users")
         if not db.test_for(("userid", ctx.author.id)):

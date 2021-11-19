@@ -38,7 +38,7 @@ class Shop(commands.Cog):
         for i in range(0, len(items), 5):
             yield items[i:i + 5]
 
-    @commands.slash_command(description = "Check out the Prism item shop.", category = "currency")
+    @commands.slash_command(description = "Check out the Prism item shop.")
     async def shop(self, ctx, page: Option(int, "The page to view", required = False, default = 1)) -> any:
         try:
             paginator = ShopPagination(ctx, self.items, page)
@@ -47,7 +47,7 @@ class Shop(commands.Cog):
         except ValueError:
             return await ctx.respond(embed = self.core.error("Invalid page number."))
 
-    @commands.slash_command(description = "Purchase an item from the shop.", category = "currency")
+    @commands.slash_command(description = "Purchase an item from the shop.")
     async def buy(self, ctx, item: Option(str, "The name of the item to purchase (any form)"), amount: Option(int, "The amount to buy", required = False, default = 1)) -> any:
         db = self.bot.db.load_db("users")
         if not db.test_for(("userid", ctx.author.id)):
@@ -86,7 +86,7 @@ class Shop(commands.Cog):
         user_inv.add_item(item["name"], amount)
         return await ctx.respond(embed = self.core.small_embed(f"You have successfully bought {item_name}."))
 
-    @commands.slash_command(description = "Sell an item from your inventory.", category = "currency")
+    @commands.slash_command(description = "Sell an item from your inventory.")
     async def sell(self, ctx, item: Option(str, "The item to sell (any form)"), amount: Option(int, "The amount to sell", required = False, default = 1)) -> any:
         db = self.bot.db.load_db("users")
         if not db.test_for(("userid", ctx.author.id)):

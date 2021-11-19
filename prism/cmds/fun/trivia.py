@@ -93,7 +93,7 @@ class Trivia(commands.Cog):
             with open(self.data.path(f"trivia/{file}"), "r") as f:
                 self.trivia[file.removesuffix(".json")] = json.loads(f.read())
 
-    @commands.slash_command(description = "Answer trivia questions for coins.", category = "fun")
+    @commands.slash_command(description = "Answer trivia questions for coins.")
     async def trivia(self, ctx, category: Option(str, "The category of trivia", choices = ["programming", "sports"])) -> any:  # noqa
         question = random.choice(self.trivia[category])
 

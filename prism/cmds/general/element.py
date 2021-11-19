@@ -41,7 +41,7 @@ class Element(commands.Cog):
         with open(self.data.path("elements.csv"), newline = "") as csvfile:
             self.elements = ElementHandler(list(csv.reader(csvfile, delimiter = ",")))
 
-    @commands.slash_command(description = "Gives you information about an element", category = "misc")
+    @commands.slash_command(description = "Gives you information about an element")
     async def element(self, ctx, element: Option(str, "The element to look up (name, symbol, atomic number)")) -> any:
         element = self.elements.find_element(element)
         if element is None:

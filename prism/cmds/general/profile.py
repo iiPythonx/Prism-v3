@@ -11,7 +11,7 @@ class Profile(commands.Cog):
         self.bot = bot
         self.core = bot.core
 
-    @commands.slash_command(description = "View somebodies profile.", category = "misc")
+    @commands.slash_command(description = "View somebodies profile.")
     async def profile(self, ctx, user: Option(discord.Member, "The user to view", required = False) = None) -> any:
         user = user or ctx.author
 

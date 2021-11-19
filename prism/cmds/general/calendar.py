@@ -51,7 +51,7 @@ class Calendar(commands.Cog):
         for i in range(0, len(items), 5):
             yield items[i:i + 5]
 
-    @commands.slash_command(description = "Control your user agenda", category = "misc")
+    @commands.slash_command(description = "Control your user agenda")
     async def agenda(
         self,
         ctx,
@@ -103,7 +103,7 @@ class Calendar(commands.Cog):
             del self.agenda_store[ctx.author.id]
             return await ctx.respond(embed = self.core.small_embed("Successfully cleared agenda items."))
 
-    @commands.slash_command(description = "Shows a calendar of the month", category = "misc")
+    @commands.slash_command(description = "Shows a calendar of the month")
     async def calendar(self, ctx) -> any:
         current, line = datetime.now(), ""
         lines = [

@@ -12,7 +12,7 @@ class Ascii(commands.Cog):
         self.bot = bot
         self.core = bot.core
 
-    @commands.slash_command(description = "Turns text into ASCII art.", category = "fun")
+    @commands.slash_command(description = "Turns text into ASCII art.")
     async def ascii(
         self,
         ctx,

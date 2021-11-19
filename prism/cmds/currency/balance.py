@@ -12,7 +12,7 @@ class Balance(commands.Cog):
         self.bot = bot
         self.core = bot.core
 
-    @commands.slash_command(description = "Checks somebodies account balance.", category = "currency")
+    @commands.slash_command(description = "Checks somebodies account balance.")
     async def balance(self, ctx, user: Option(discord.Member, "The user to check the balance of", required = False) = None) -> any:
         user = user or ctx.author
 

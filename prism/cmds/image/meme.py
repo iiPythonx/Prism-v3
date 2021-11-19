@@ -45,7 +45,7 @@ class Meme(commands.Cog):
 
         return submission
 
-    @commands.slash_command(description = "Fetches a random meme from reddit.", category = "image")
+    @commands.slash_command(description = "Fetches a random meme from reddit.")
     async def meme(self, ctx) -> any:
         if self._user is None:
             return await ctx.respond(embed = self.core.error("This command is currently disabled."))

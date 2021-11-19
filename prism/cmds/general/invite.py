@@ -10,7 +10,7 @@ class Invite(commands.Cog):
         self.bot = bot
         self.core = bot.core
 
-    @commands.slash_command(description = "Invite Prism to your server.", category = "misc")
+    @commands.slash_command(description = "Invite Prism to your server.")
     async def invite(self, ctx) -> any:
         if not hasattr(self, "url"):
             self.url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=2147609664&scope=applications.commands%20bot"

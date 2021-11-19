@@ -16,7 +16,7 @@ class Stats(commands.Cog):
     def _format_sectors(self, lines: list) -> str:
         return "".join("> " + line + "\n" for line in lines)[:-1]
 
-    @commands.slash_command(description = "Show Prism's system information.", category = "misc")
+    @commands.slash_command(description = "Show Prism's system information.")
     async def stats(self, ctx) -> any:
 
         # Initialization
