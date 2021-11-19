@@ -1,7 +1,7 @@
 {
+    "color": "#FFFFFF",
     "admin": {
-        "owner": "Somebody#0001",
-        "friends": []
+        "owner": "Somebody#0001"
     },
     "prefix": {
         "value": "p!",
