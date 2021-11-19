@@ -15,21 +15,19 @@ class Version(commands.Cog):
     async def version(self, ctx) -> any:
 
         # Grab git information
-        last_commit = self.core.fetch_output("git log -1 --pretty=format:%B")
-        last_author = self.core.fetch_output(["git", "log", "-1", "--pretty=format:'%an <%ae>"]).strip("'")
-        curr_branch = self.core.fetch_output("git branch --show-current")
-        last_modify = self.core.fetch_output("git log -1 --pretty=format:%cd")
-        filesmodify = len(self.core.fetch_output("git diff --name-only HEAD HEAD~1").split("\n"))
+        last_commits = self.core.fetch_output(["git", "log", "-n", "5", "--oneline", "--pretty=format:'%s <%an>'"]).replace("'", "")
+        curnt_branch = self.core.fetch_output("git branch --show-current")
+        lastmodified = self.core.fetch_output("git log -1 --pretty=format:%cd")
 
         # Construct embed
         embed = self.core.embed(
             title = f"Prism v{__version__} - Build Info",
-            description = f"Current branch: `{curr_branch}`",
+            description = f"Current branch: `{curnt_branch}`",
             url = self.github_repo,
             footer = ctx
         )
-        embed.add_field(name = "Last commit", value = f"```\n\"{last_commit}\"\n(by {last_author})\n```", inline = False)
-        embed.add_field(name = "Last modified", value = f"```\n{last_modify}\n{filesmodify} file(s) changed.\n```", inline = False)
+        embed.add_field(name = "Last 5 commits", value = f"```\n{last_commits}\n```", inline = False)
+        embed.add_field(name = "Last modified", value = f"```\n{lastmodified}\n```", inline = False)
         return await ctx.respond(embed = embed)
 
 # Link

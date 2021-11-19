@@ -13,6 +13,8 @@ from .modules.images import images
 from .modules.cooldowns import Cooldowns
 from .modules.inventory import Inventory
 
+from ..config import config
+
 # Data directory
 class PrismDataDirectory(object):
     def __init__(self, dir_: str) -> None:
@@ -26,7 +28,7 @@ class Utils(object):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         self.emojis = {"checkmark": ":white_check_mark:"}
-        self.storage = {"accent": "#EB8F6B"}
+        self.storage = {"accent": config.get("color")}
 
         self.asset_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../assets"))
 
