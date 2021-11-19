@@ -31,7 +31,7 @@ class UrbanDictionary(commands.Cog):
         except Exception:
             raise ConnectionError
 
-    @commands.slash_command(description = "Searches Urban Dictionary for a phrase.", category = "fun")
+    @commands.slash_command(description = "Searches Urban Dictionary for a phrase.")
     @commands.is_nsfw()
     async def dict(self, ctx, phrase: Option(str, "The phrase to lookup")) -> any:
         try:

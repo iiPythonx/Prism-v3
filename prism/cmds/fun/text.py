@@ -25,7 +25,7 @@ class Text(commands.Cog):
     def caps(self, text: str) -> str:
         return "".join([getattr(char, random.choice(["lower", "upper"]))() for char in list(text)])
 
-    @commands.slash_command(description = "Mess around with text in weird ways.", category = "fun")
+    @commands.slash_command(description = "Mess around with text in weird ways.")
     async def text(self, ctx, action: Option(str, "The action to perform", choices = ["scramble", "caps"]), text: Option(str, "The text to mess with")) -> any:
         try:
             return await ctx.respond(self.actions[action](text))

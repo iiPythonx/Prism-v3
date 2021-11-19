@@ -22,7 +22,7 @@ class Slots(commands.Cog):
     def pick(self) -> str:
         return random.choice(self._items)
 
-    @commands.slash_command(description = "Spin some slot machines and earn some coins (or lose some).", category = "currency")
+    @commands.slash_command(description = "Spin some slot machines and earn some coins (or lose some).")
     async def slots(self, ctx, bet: Option(int, "The amount you want to bet.")) -> any:
         if self.bot.cooldowns.on_cooldown("slots", ctx.author):
             return await ctx.respond(embed = self.bot.cooldowns.cooldown_text("slots", ctx.author))

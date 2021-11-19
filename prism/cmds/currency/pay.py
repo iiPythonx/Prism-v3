@@ -11,7 +11,7 @@ class Pay(commands.Cog):
         self.bot = bot
         self.core = bot.core
 
-    @commands.slash_command(description = "Pays another user using coins from your balance.", category = "currency")
+    @commands.slash_command(description = "Pays another user using coins from your balance.")
     async def pay(self, ctx, user: Option(discord.Member, "The user you wish to pay."), amount: Option(str, "The amount to pay.")) -> any:
         if user == ctx.author:
             return await ctx.respond(embed = self.core.error("You cannot pay yourself."))

@@ -11,7 +11,7 @@ class Avatar(commands.Cog):
         self.bot = bot
         self.core = bot.core
 
-    @commands.slash_command(description = "Shows you somebodies profile picture.", category = "image")
+    @commands.slash_command(description = "Shows you somebodies profile picture.")
     async def avatar(self, ctx, user: Option(discord.Member, "The user with the profile picture", reuqired = False)) -> any:
         user = user or ctx.author
 

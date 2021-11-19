@@ -16,7 +16,7 @@ class Triggered(commands.Cog):
 
         self.im = self.core.images
 
-    @commands.slash_command(description = "Is it just me, or are they triggered?", category = "image")
+    @commands.slash_command(description = "Is it just me, or are they triggered?")
     async def triggered(self, ctx, user: Option(discord.Member, "The user to make triggered", required = False)) -> any:
         user = user or ctx.author
 

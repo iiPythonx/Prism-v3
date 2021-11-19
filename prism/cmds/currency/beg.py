@@ -20,7 +20,7 @@ class Beg(commands.Cog):
             {"name": "Steve Jobs", "quote": lambda: "have you bought the iPhone 14S Pro Max Lite Premium SE yet?"}
         ]
 
-    @commands.slash_command(description = "Beg the rich for money.", category = "currency")
+    @commands.slash_command(description = "Beg the rich for money.")
     async def beg(self, ctx) -> any:
         db = self.bot.db.load_db("users")
         if not db.test_for(("userid", ctx.author.id)):

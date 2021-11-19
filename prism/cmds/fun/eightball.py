@@ -20,7 +20,7 @@ class Eightball(commands.Cog):
             "Very doubtful."
         ]
 
-    @commands.slash_command(description = "Ask the magic eightball a question.", category = "fun")
+    @commands.slash_command(description = "Ask the magic eightball a question.")
     async def eightball(self, ctx, *, question: Option(str, "What you want to ask the eightball")) -> any:
         response = random.choice(self._8ball_responses)
 

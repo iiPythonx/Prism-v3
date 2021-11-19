@@ -12,7 +12,7 @@ class Customize(commands.Cog):
 
         self._key_checks = {"accent": lambda v: self.core.color(v)}
 
-    @commands.slash_command(description = "Customize your profile.", category = "misc")
+    @commands.slash_command(description = "Customize your profile.")
     async def customize(self, ctx, option: Option(str, "The option you wish to change", choices = ["bio", "accent"]), value: Option(str, "The new value")) -> any:  # noqa
         try:
             if option in self._key_checks:

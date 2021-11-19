@@ -14,7 +14,7 @@ class Guess(commands.Cog):
 
         self._cooldown_time = (60 * 60) * 5
 
-    @commands.slash_command(description = "Earn coins for guessing the right number.", category = "fun")
+    @commands.slash_command(description = "Earn coins for guessing the right number.")
     async def guess(self, ctx) -> any:
         if self.bot.cooldowns.on_cooldown("guess", ctx.author):
             return await ctx.respond(embed = self.bot.cooldowns.cooldown_text("guess", ctx.author))

@@ -33,7 +33,7 @@ class RPS(commands.Cog):
         else:
             return 1
 
-    @commands.slash_command(description = "Play Rock Paper Scissors.", category = "fun")
+    @commands.slash_command(description = "Play Rock Paper Scissors.")
     async def rps(self, ctx) -> any:
         await ctx.respond(embed = self.core.embed(title = "Now playing Rock Paper Scissors..."))
         results = []

@@ -112,7 +112,7 @@ class Work(commands.Cog):
         # Return problem data
         return [f"{n1} {operator} {n2}", incorrects + [correct], correct]
 
-    @commands.slash_command(description = "Allows you to work for money.", category = "currency")
+    @commands.slash_command(description = "Allows you to work for money.")
     async def work(self, ctx) -> any:
         if self.bot.cooldowns.on_cooldown("work", ctx.author):
             return await ctx.respond(embed = self.bot.cooldowns.cooldown_text("work", ctx.author))

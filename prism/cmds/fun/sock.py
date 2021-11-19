@@ -15,7 +15,7 @@ class Sock(commands.Cog):
         self._sock_percents = (3, 7)  # 3-7% of their balance
         self._success_msgs = ["rekt", "#pwned", "Imagine getting socked", "Impressive", "GG"]
 
-    @commands.slash_command(description = "Sock somebody for some easy coins.", category = "fun")
+    @commands.slash_command(description = "Sock somebody for some easy coins.")
     async def sock(self, ctx, *, user: Option(discord.Member, "The user you wish to sock")) -> any:
         if user == ctx.author:
             return await ctx.respond(embed = self.core.error("Why would you want to sock yourself?"))

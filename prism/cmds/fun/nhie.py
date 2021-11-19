@@ -21,7 +21,7 @@ class NHIE(commands.Cog):
             "woken someone up by snoring", "given someone a black eye"
         ]
 
-    @commands.slash_command(description = "Gives you a random 'never have i ever' question.", category = "fun")
+    @commands.slash_command(description = "Gives you a random 'never have i ever' question.")
     async def neverhaveiever(self, ctx) -> any:
         return await ctx.respond(embed = self.core.small_embed("Never have I ever " + random.choice(self.responses) + "."))
 
