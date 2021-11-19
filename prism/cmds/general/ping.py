@@ -22,7 +22,7 @@ class Ping(commands.Cog):
 
         # Show ping
         embed = self.core.embed(title = "Pong :ping_pong:", description = f"Bot: {bot_ping}ms | API: {api_ping}ms\nRoundtrip: {api_ping + bot_ping}ms")
-        return await message.edit(embed = embed)
+        return await message.edit_original_message(embed = embed)
 
 # Link
 def setup(bot) -> None:

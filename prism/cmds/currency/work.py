@@ -21,10 +21,16 @@ class WorkButtons(discord.ui.View):
             self.btns[btn.custom_id] = btn.label
             self.add_item(btn)
 
-    async def callback(self, inter) -> None:
-        if inter.user != self.ctx.author:
-            return
+    async def interaction_check(self, interaction) -> bool:
+        if interaction.user != self.ctx.author:
+            return False
 
+        return True
+
+    async def on_timeout(self) -> None:
+        return await self.message.edit_original_message(embed = self.core.error("You took too long to respond!"), view = None)
+
+    async def callback(self, inter) -> None:
         self.stop()
         cid = inter.data["custom_id"]
         if cid not in self.btns:

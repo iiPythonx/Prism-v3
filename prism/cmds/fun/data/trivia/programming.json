@@ -1,0 +1,110 @@
+[
+    {
+        "question": "Which of these is a Python control flow statement type?",
+        "choices": [
+            "else if",
+            "elif",
+            "case"
+        ],
+        "answer": "elif"
+    },
+    {
+        "question": "Which of these transports mail over the internet?",
+        "choices": [
+            "SMTP",
+            "FTP",
+            "HTTP"
+        ],
+        "answer": "SMTP"
+    },
+    {
+        "question": "Which is a valid HTML tag?",
+        "choices": [
+            "<body>",
+            "<scroll>",
+            "<website>"
+        ],
+        "answer": "<body>"
+    },
+    {
+        "question": "In Python, which of these represents a decimal?",
+        "choices": [
+            "int",
+            "float",
+            "dec"
+        ],
+        "answer": "float"
+    },
+    {
+        "question": "CSS stands for ____ Style Sheets",
+        "choices": [
+            "Cascading",
+            "Cascaded",
+            "Critical"
+        ],
+        "answer": "Cascading"
+    },
+    {
+        "question": "Guido van Rossum created which language?",
+        "choices": [
+            "Python",
+            "Perl",
+            "COBOL"
+        ],
+        "answer": "Python"
+    },
+    {
+        "question": "In C, what statement 'requires' another C file?",
+        "choices": [
+            "#include",
+            "#require",
+            "#import"
+        ],
+        "answer": "#include"
+    },
+    {
+        "question": "In Lua, how do you get the length of a string?",
+        "choices": [
+            "string.len",
+            "string.sizeof",
+            "string.length"
+        ],
+        "answer": "string.len"
+    },
+    {
+        "question": "Who maintains the HTML markup language?",
+        "choices": [
+            "WHATWG",
+            "W3C",
+            "Google"
+        ],
+        "answer": "WHATWG"
+    },
+    {
+        "question": "In JS, how do you make something optional?",
+        "choices": [
+            "object?.key",
+            "object.?key",
+            "object[key]"
+        ],
+        "answer": "object?.key"
+    },
+    {
+        "question": "In JS, what is Infinity-Infinity?",
+        "choices": [
+            "0",
+            "NaN",
+            "-Infinity"
+        ],
+        "answer": "NaN"
+    },
+    {
+        "question": "```js\nlet x = parseInt('abc');```\nWhich of the following is true?",
+        "choices": [
+            "x === NaN",
+            "x !== NaN",
+            "x !== x"
+        ],
+        "answer": "x !== x"
+    }
+]
