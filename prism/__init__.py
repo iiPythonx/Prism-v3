@@ -1,7 +1,7 @@
 __author__ = "iiPython"
 __license__ = "MIT"
 __copyright__ = "(c) 2021 iiPython"
-__version__ = "1.0.6"
+__version__ = "1.0.7"
 
 from .logging import logger
 from .core.bot import PrismBot
