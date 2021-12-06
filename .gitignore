@@ -10,3 +10,6 @@ db/
 
 # Hide IDE files
 .vscode/
+
+# Hide github data
+.github/
