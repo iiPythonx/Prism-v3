@@ -1,4 +1,4 @@
-# Copyright 2021 iiPython
+# Copyright 2021-xx iiPython
 # tools/init_db.py
 # Initializes the required database files
 

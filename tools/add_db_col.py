@@ -1,4 +1,4 @@
-# Copyright 2021 iiPython
+# Copyright 2021-xx iiPython
 # tools/add_db_col.py
 # Adds a column to an sqlite db, without requiring a reset
 

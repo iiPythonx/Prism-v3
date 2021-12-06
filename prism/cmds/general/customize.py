@@ -1,4 +1,4 @@
-# Copyright 2021 iiPython
+# Copyright 2021-xx iiPython
 
 # Modules
 from discord.ext import commands
