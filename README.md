@@ -40,7 +40,6 @@ The `config.json` should look like the following:
 {
     "admin": {
         "owner": "Somebody#0001",
-        "friends": []
     },
     "prefix": {
         "value": "p!",
@@ -71,8 +70,6 @@ Launching the bot is as simple as running `python3 launch.py`
 For more configuration, please consult the [wiki](https://github.com/ii-Python/Prism-v3/wiki).
 
 ---
-To enable debug mode (which features an autoreload feature), pass `--debug` to `launch.py`.  
-**Please note, enabling debug mode will increase memory usage when lots of commands are loaded.**
 
 ### 👥 Credits
 
