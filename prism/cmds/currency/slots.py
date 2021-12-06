@@ -60,7 +60,7 @@ class Slots(commands.Cog):
         # Send embed
         return await ctx.respond(embed = self.core.embed(
             title = results,
-            description = f"{f'You won `{self.core.format_coins(earn)}`' if earn else f'You lost your `{self.core.format_coins(bet)}`'} coin(s)."
+            description = f"{f'You won `{self.core.format_coins(earn)}`' if earn else f'You lost your {self.core.format_coins(bet)}'} coin(s)."
         ))
 
 # Link
