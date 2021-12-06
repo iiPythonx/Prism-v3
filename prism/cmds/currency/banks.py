@@ -29,7 +29,7 @@ class Banks(commands.Cog):
         embed = self.core.embed(title = f"{self.core.frmt_name(ctx.author)}'s Bank", footer = ctx)
         embed.add_field(
             name = "Bank usage",
-            value = f"{self.core.format_coins(bank_bal)}/{self.core.format_coins(_bank_max_val)} coin(s) ({round(bank_bal / _bank_max_val, 2)}%)"
+            value = f"{self.core.format_coins(bank_bal)} coin(s) ({round(bank_bal / _bank_max_val, 2)}%)"
         )
         embed.set_thumbnail(url = user.avatar.url)
         return await ctx.respond(embed = embed)

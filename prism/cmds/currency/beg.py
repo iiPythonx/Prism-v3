@@ -38,7 +38,7 @@ class Beg(commands.Cog):
         # Handle embed
         person = random.choice(self.people)
         embed = self.core.embed(
-            title = f"{person['name']} gave you `{earn}` coins.",
+            title = f"{person['name']} gave you {earn} coins.",
             description = f"\"{person['quote']()}\"",
             footer = ctx
         )

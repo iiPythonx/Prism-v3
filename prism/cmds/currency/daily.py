@@ -32,7 +32,7 @@ class Daily(commands.Cog):
         self.bot.cooldowns.add_cooldown("daily", ctx.author, self._cooldown)
 
         # Handle embed
-        embed = self.core.small_embed(f"You redeemed `{self.core.format_coins(earn)}` coin(s).", footer = ctx)
+        embed = self.core.small_embed(f"You redeemed {self.core.format_coins(earn)} coin(s).", footer = ctx)
         return await ctx.respond(embed = embed)
 
 # Link
