@@ -3,13 +3,12 @@ __pycache__/
 
 # Hide secrets :)
 .env
+db/
 config.json
 
-# Hide database
-db/
+# Hide extra cogs (wip stuff + seasonal events)
+prism/cmds/extras/
 
-# Hide IDE files
+# Hide data files
 .vscode/
-
-# Hide github data
 .github/
