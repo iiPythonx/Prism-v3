@@ -26,7 +26,7 @@ class Banks(commands.Cog):
         bank_bal = get_bank_balance(user.id)
 
         # Handle embed
-        embed = self.core.embed(title = f"{self.core.frmt_name(ctx.author)}'s Bank", footer = ctx)
+        embed = self.core.embed(title = f"{self.core.frmt_name(user)}'s Bank", footer = ctx)
         embed.add_field(
             name = "Bank usage",
             value = f"{self.core.format_coins(bank_bal)} coin(s) ({round(bank_bal / _bank_max_val, 2)}%)"

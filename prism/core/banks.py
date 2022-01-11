@@ -5,7 +5,7 @@
 from prism.database import Database, DBConnection
 
 # Initialization
-_bank_max_val = 9223372036854775807
+_bank_max_val = 100000000000
 db = Database().load_db("bank")
 
 # Helper functions
