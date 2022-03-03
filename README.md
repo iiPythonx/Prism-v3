@@ -41,10 +41,6 @@ The `config.json` should look like the following:
     "admin": {
         "owner": "Somebody#0001",
     },
-    "prefix": {
-        "value": "p!",
-        "allow_change": true
-    },
     "paths": {
         "db_dir": "db",
         "cmd_path": "prism/cmds"
@@ -59,8 +55,6 @@ The `config.json` should look like the following:
 
 The following are required:
 - `admin/owner`, which is used in the help command (among other places)
-- `prefix/value`, which is the bot prefix
-- `prefix/allow_change`, which toggles whether users can change their server prefixes or not
 - `paths/db_dir`, the database folder location
 - `paths/cmd_path`, the command folder location
 

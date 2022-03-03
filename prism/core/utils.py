@@ -38,9 +38,9 @@ class Utils(object):
         self.inventory = Inventory
         self.cooldowns = Cooldowns(self)
 
-    def color(self, hex_: str, accent_def: bool = True) -> discord.Color:
+    def color(self, hex_: str) -> discord.Color:
         try:
-            return discord.Color.from_hex(hex_)
+            return discord.Color(int(hex_.lstrip("#"), 16))
 
         except Exception:
             return self.color(self.storage["accent"])

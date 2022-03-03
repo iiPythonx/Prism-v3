@@ -37,7 +37,6 @@ class Eval(commands.Cog):
     @commands.slash_command(name = "eval", description = "Evaluate Python code.")
     @commands.is_owner()
     async def _eval(self, ctx, *, cmd: Option(str, "The code to evaluate.")) -> any:
-        await ctx.delete()
         env = {
             "ctx": ctx,
             "bot": self.bot,

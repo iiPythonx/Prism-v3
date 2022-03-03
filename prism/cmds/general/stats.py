@@ -32,7 +32,7 @@ class Stats(commands.Cog):
                 f"Account: {self.bot.user}",
                 f"Server count: {len(self.bot.guilds)} server(s)",
                 f"Bot version - v{__version__}",
-                f"[Library](https://github.com/ii-Python/discord) version: {discord.__version__}"
+                f"Libary version: {discord.__version__}"
             ]),
             inline = False
         )
