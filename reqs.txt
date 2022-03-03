@@ -5,4 +5,4 @@ pillow
 pyfiglet
 iipythonpy
 python-dotenv
-git+https://github.com/ii-Python/discord
+git+https://github.com/Pycord-Development/pycord
