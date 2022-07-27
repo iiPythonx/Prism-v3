@@ -1,7 +1,7 @@
 ## Prism v3 - the final version
 ---
 
-![](https://img.shields.io/github/commit-activity/m/ii-Python/Prism-v3) ![](https://img.shields.io/github/languages/code-size/ii-Python/Prism-v3) ![](https://img.shields.io/tokei/lines/github/ii-Python/Prism-v3)
+![](https://img.shields.io/github/commit-activity/m/iiPythonx/Prism-v3) ![](https://img.shields.io/github/languages/code-size/iiPythonx/Prism-v3) ![](https://img.shields.io/tokei/lines/github/iiPythonx/Prism-v3)
 
 Welcome to the Prism v3 repository, hosting the code for Prism v3.  
 Prism is a self-hosted bot, but it also has a public instance hosted by me ([invite](https://discord.com/api/oauth2/authorize?client_id=862456523209179147&permissions=2147609664&scope=applications.commands%20bot)).
@@ -19,7 +19,7 @@ You require the following (before being able to continue at all):
 
 The following script should setup the base repository:
 ```
-git clone https://github.com/ii-Python/Prism-v3
+git clone https://github.com/iiPythonx/Prism-v3
 cd Prism-v3
 python3 -m pip install -r reqs.txt
 mv example_config.json config.json
@@ -61,7 +61,7 @@ The following are required:
 The rest of the options are up to you to tweak on your own accord.  
 Launching the bot is as simple as running `python3 launch.py`
 
-For more configuration, please consult the [wiki](https://github.com/ii-Python/Prism-v3/wiki).
+For more configuration, please consult the [wiki](https://github.com/iiPythonx/Prism-v3/wiki).
 
 ---
 
