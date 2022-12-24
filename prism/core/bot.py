@@ -38,8 +38,6 @@ class PrismBot(commands.Bot):
         self.config = config
         self.cooldowns = self.core.cooldowns
 
-        self.owner = config.get(["admins", "owner"])
-
     def launch_bot(self) -> None:
         self.log("info", "Launching bot...")
 
@@ -111,7 +109,7 @@ class PrismBot(commands.Bot):
 
         return await ctx.send(
             embed = self.core.error(
-                f"An unexpected error has occured, please report this to {self.owner}.\nError code: `{error_code}`",
+                f"An unexpected error has occured, please report this to {config.get(['admin', 'owner'])}.\nError code: `{error_code}`",
                 syserror = True
             )
         )

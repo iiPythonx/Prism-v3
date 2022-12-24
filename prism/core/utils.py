@@ -27,7 +27,6 @@ class PrismDataDirectory(object):
 class Utils(object):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.emojis = {"checkmark": ":white_check_mark:"}
         self.storage = {"accent": config.get("color")}
 
         self.asset_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../assets"))

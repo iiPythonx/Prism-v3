@@ -50,7 +50,7 @@ class Pay(commands.Cog):
 
         # Handle embed
         embed = self.core.embed(
-            title = f"{self.core.emojis['checkmark']} | Transaction complete.",
+            title = f":white_check_mark: | Transaction complete.",
             description = f"Transferred: {self.core.format_coins(amount)} coin(s) | To: {user.mention}\nNew balance: {self.core.format_coins(bal)}",
             footer = ctx
         )
