@@ -4,14 +4,16 @@
 
 # Modules
 import os
+import json
 import sqlite3
 from rich import print
-from prism.config import config
 
 # Check the db folder
-print("[yellow]Initializing databases...")
-db_dir = config.get(["paths", "db_dir"])
+with open("config.json", "r") as fh:
+    config = json.loads(fh.read())
 
+print("[yellow]Initializing databases...")
+db_dir = config["paths"]["db_dir"]
 if not os.path.isdir(db_dir):
     os.mkdir(db_dir)
 
