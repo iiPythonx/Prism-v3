@@ -61,17 +61,17 @@ class Eval(commands.Cog):
             result = (await eval(f"{fn_name}()", env))
 
             try:
-                return await ctx.send(embed = self._eval_(result, start))
+                return await ctx.respond(embed = self._eval_(result, start))
 
             except discord.HTTPException:
-                return await ctx.send(embed = self.core.error("Output is too large to send."))
+                return await ctx.respond(embed = self.core.error("Output is too large to send."))
 
         except Exception as e:
             try:
-                return await ctx.send(embed = self._eval_(e, start))
+                return await ctx.respond(embed = self._eval_(e, start))
 
             except discord.HTTPException:
-                return await ctx.send(embed = self.core.error("Output is too large to send."))
+                return await ctx.respond(embed = self.core.error("Output is too large to send."))
 
 # Link
 def setup(bot) -> None:
