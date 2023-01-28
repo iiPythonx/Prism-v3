@@ -22,6 +22,8 @@ class Profile(commands.Cog):
             return await ctx.respond(embed = self.core.noacc(ctx, user))
 
         bankinfo = self.bot.db.load_db("bank").get(("userid", user.id))
+        if not bankinfo:
+            bankinfo = {"balance": 0}
 
         # Construct embed
         embed = self.core.embed(
